@@ -19,7 +19,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
 @WebMvcTest
 class UserControllerTest {
     @Autowired
@@ -35,10 +34,12 @@ class UserControllerTest {
     @DisplayName("회원가입성공")
     void join() throws Exception {
         //가라데이터
-        String userName="곽치영2";
+        String userName="꽉꽉이";
         String password="1234";
-        mockMvc.perform(post("/api/v1/users/join").contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName,password))))
+
+        mockMvc.perform(post("/api/v1/users/join")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName,password))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -57,5 +58,7 @@ class UserControllerTest {
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
+
+
 
 }
