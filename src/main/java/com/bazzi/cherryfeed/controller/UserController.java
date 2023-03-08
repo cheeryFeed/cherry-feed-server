@@ -4,6 +4,8 @@ import com.bazzi.cherryfeed.domain.dto.UserJoinRequest;
 import com.bazzi.cherryfeed.model.User2;
 import com.bazzi.cherryfeed.repository.UserRepository;
 import com.bazzi.cherryfeed.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,13 +15,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+@Api(tags = "루카")
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
 
-
+    @ApiOperation(value = "회원가입")
     @PostMapping("/join") // URI=  api/v1/users/join - post요청시 회원가입 진행
     public ResponseEntity<String> join(@RequestBody UserJoinRequest dto){
         userService.join(dto.getUserName(),dto.getPassword());
