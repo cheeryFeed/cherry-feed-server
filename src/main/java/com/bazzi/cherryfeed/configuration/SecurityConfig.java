@@ -8,6 +8,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 public class SecurityConfig {
+    /*
     //스프링부트가 버전이 올라가면서 기존에 쓰던 방법대신 빈으로 SecurityFilterChain을 제정의해서 사용한다.
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -24,4 +25,6 @@ public class SecurityConfig {
                 .and()
                 .build();
     }
+    */
+
 }

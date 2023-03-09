@@ -1,6 +1,7 @@
 package com.bazzi.cherryfeed.controller;
 
 import com.bazzi.cherryfeed.domain.dto.UserJoinRequest;
+import com.bazzi.cherryfeed.domain.dto.UserLoginRequest;
 import com.bazzi.cherryfeed.model.User2;
 import com.bazzi.cherryfeed.repository.UserRepository;
 import com.bazzi.cherryfeed.service.UserService;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 @Api(tags = "루카")
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping(value = "/api/v1/users" , produces = "application/json; charset=utf8") //자꾸 한글깨지길래 utf-8변환함;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
@@ -28,6 +29,12 @@ public class UserController {
         userService.join(dto.getUserName(),dto.getPassword());
         return ResponseEntity.ok().body("회원가입이 성공하였습니다.");
     };
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserLoginRequest dto) {
+        String token = userService.login(dto.getUserName(), dto.getPassword());
+        return ResponseEntity.ok().body(token);
+    }
 
 
 
