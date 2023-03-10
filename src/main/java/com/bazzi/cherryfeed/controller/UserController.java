@@ -25,14 +25,14 @@ public class UserController {
 
     @ApiOperation(value = "회원가입")
     @PostMapping("/join") // URI=  api/v1/users/join - post요청시 회원가입 진행
-    public ResponseEntity<String> join(@RequestBody UserJoinRequest dto){
-        userService.join(dto.getUserName(),dto.getPassword());
+    public ResponseEntity<String> join(@RequestBody UserJoinRequest userJoinRequestDto){
+        userService.join(userJoinRequestDto);
         return ResponseEntity.ok().body("회원가입이 성공하였습니다.");
     };
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserLoginRequest dto) {
-        String token = userService.login(dto.getUserName(), dto.getPassword());
+        String token = userService.login(dto.getEmail(), dto.getPassword());
         return ResponseEntity.ok().body(token);
     }
 

@@ -13,13 +13,19 @@ public class JwtTokenUtil {
                 .getBody().get("userName", String.class);
     }
 
+    public static String getEmail(String token, String key){ //토큰에서 값 꺼내기
+        return Jwts.parser().setSigningKey(key).parseClaimsJws(token)
+                .getBody().get("email", String.class);
+    }
+
+
     public static boolean isExpired(String token, String key){
         return Jwts.parser().setSigningKey(key).parseClaimsJws(token)
                 .getBody().getExpiration().before(new Date());
     }
-    public static String createToken(String userName , String key , long expireTimeMs) { //expireTime을 받을것임.
+    public static String createToken(String email , String key , long expireTimeMs) { //expireTime을 받을것임.
         Claims claims = Jwts.claims(); //map이랑 비슷
-        claims.put("userName", userName); //토큰을 열면 userName이 들어가있을것임
+        claims.put("email", email); //토큰을 열면 email이 들어가있을것임
 
         return Jwts.builder()
                 .setClaims(claims)
