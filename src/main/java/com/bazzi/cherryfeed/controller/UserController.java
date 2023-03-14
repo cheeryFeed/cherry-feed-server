@@ -32,7 +32,7 @@ public class UserController {
 
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody UserLoginRequest dto) {
-        String token = userService.login(dto.getEmail(), dto.getPassword());
+        String token = userService.login(dto.getEmail(), dto.getPw());
         return ResponseEntity.ok().body(token);
     }
 

@@ -30,9 +30,9 @@ public class UserService {
         String password   = userJoinRequestDto.getPassword(); //비밀번호
         String userName   = userJoinRequestDto.getUserName(); //회원이름
         String nickName   = userJoinRequestDto.getNickname(); //닉네임
-        String birth_dt   = userJoinRequestDto.getBirth_dt(); //생년월일
-        String user_terms = userJoinRequestDto.getUser_terms(); //이용약관
-        String ph_no      = userJoinRequestDto.getPh_no();    //휴대폰번호
+        String birth   = userJoinRequestDto.getBirth(); //생년월일
+        String isTerms = userJoinRequestDto.getIsTerms(); //이용약관
+        String phone      = userJoinRequestDto.getPhone();    //휴대폰번호
         String gender     = userJoinRequestDto.getGender();   //성별
 
         // user name 중복 체크
@@ -43,14 +43,15 @@ public class UserService {
         // 저장
         User user = User.builder()
                 .email(email)
-                .password(encoder.encode(password)) //인코딩
+                .pw(encoder.encode(password)) //인코딩
                 .userName(userName)
                 .nickname(nickName)
-                .birth_dt(birth_dt)
-                .user_terms(user_terms)
-                .ph_no(ph_no)
+                .birth(birth)
+                .isTerms(isTerms)
+                .phone(phone)
                 .gender(gender)
                 .build();
+
         userRepository.save(user);
         return "SUCCES";
     }
@@ -61,8 +62,8 @@ public class UserService {
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, email + " 이 없습니다."));
 
         // password틀림
-        log.info("selectedPw:{} pw:{}", selectedUser.getPassword() , password);
-        if(!encoder.matches(password , selectedUser.getPassword())) {
+        log.info("selectedPw:{} pw:{}", selectedUser.getPw() , password);
+        if(!encoder.matches(password , selectedUser.getPw())) {
             throw new AppException(ErrorCode.INVALID_PASSWORD,"패스워드를 잘못 입력 헀습니다.");
         }
 
