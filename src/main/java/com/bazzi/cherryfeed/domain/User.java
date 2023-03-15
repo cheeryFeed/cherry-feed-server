@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity //JPA에서 관리할때 JPA가 사용하는 객체를 의미할때
 @AllArgsConstructor
@@ -36,9 +33,12 @@ public class User {
     private String link;           //링크 varchar(16)
     private Boolean isOpen;        //계정 비공개 여부 boolean
     private String status;         //상태 varchar(16)
-    private String withdrawalDetailId; //해지일 varchar(16)
     private String phone;          //휴대폰번호 varchar(20)
     private String gender;         //성별 varchar(16)
     private String role;           //권한 USER_ROLE,ADMIN_ROLE,BANNED_ROLE
+    //private String withdrawalDetailId; //서비스탈퇴이력아이디
+    @OneToOne
+    @JoinColumn(name = "withdrawal_detail_id") //서비스탈퇴이력아이디
+    private WithdrawalDetail withdrawalDetailId;
 
 }

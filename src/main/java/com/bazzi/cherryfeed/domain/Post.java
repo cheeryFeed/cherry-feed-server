@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -20,14 +17,24 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //DB에서 값을 증가시키는 전략 IDENTITY -MySQL auto increment
     private Long id;             //게시물번호 아이디
-    private Long createdById;   //등록자아이디
-    private Long calId;         //일정고유ID
+    //private Long createdById;   //등록자아이디
+    //private Long calId;         //일정고유ID
     private String postNm;      //게시물제목
     private String location;    //장소
     private Date postAt ;       //작성일자
     private Long imgId;         //이미지아이디
     private Long postView;      //조회수
     private Long scrap;         //스크랩수
+
+    @ManyToOne
+    @JoinColumn(name = "created_by_id") //등록자아이디
+    User createdById;
+
+    @ManyToOne
+    @JoinColumn(name = "cal_id") //일정고유ID
+    private CoupleCalendar calId;
+
+
 
 
 

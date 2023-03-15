@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -20,9 +17,12 @@ public class CheckList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //DB에서 값을 증가시키는 전략 IDENTITY -MySQL auto increment
     private Long id;             //체크리스트 아이디
-    private Long calendarId;     //일정고유ID
+    //private Long calendarId;     //일정고유ID
     private String content;      //내용(체크리스트)
     private boolean isFinish;    //체크유무 true,false
+    @ManyToOne
+    @JoinColumn(name = "calendar_id")  //일정고유ID
+    private CoupleCalendar calendarId;
 
 
 

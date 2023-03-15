@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity //JPA에서 관리할때 JPA가 사용하는 객체를 의미할때
@@ -20,7 +17,14 @@ public class Love {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;            //좋아요 테이블 아이디
-    private Long createdById;   //좋아요 누른 아이디
     private Date createAt;      //좋아요 누른 일자
-    private Long createdByNo;   //게시물번호
+    //private Long createdById;   //좋아요 누른 아이디
+    //private Long createdByNo;   //게시물번호
+    @ManyToOne
+    @JoinColumn(name = "created_by_id") //좋아요 누른 아이디
+    User createdById;
+    @ManyToOne
+    @JoinColumn(name = "created_by_no") //게시물번호
+    private Post createdByNo;
+
 }

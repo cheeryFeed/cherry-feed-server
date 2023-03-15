@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity //JPA에서 관리할때 JPA가 사용하는 객체를 의미할때
@@ -20,8 +17,8 @@ public class CoupleCalendar {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;            //일정 테이블 아이디
-    private Long couple_id;     //커플아이디
-    private Long createdById;   //등록아이디
+    //private Long couple_id;     //커플아이디
+    //private Long createdById;   //등록아이디
     private Long PartiId1;      //참여자아이디1
     private Long PartiId2;      //참여자아이디2
     private String title;       //제목
@@ -34,6 +31,13 @@ public class CoupleCalendar {
     private String content;     //내용(다이어리)
     private Date alarmAt;       //알림일자
     private Long type;          //유형 - 계획1,일정2
+    @ManyToOne
+    @JoinColumn(name = "couple_id")     //커플아이디 //2.이름을 name값으로 지정하며 FK로 만들어준다.
+    private Couple coupleId;                      //1. 이 객체 테이블의 PK아이디를 가져와
+    @ManyToOne
+    @JoinColumn(name = "created_by_id") //등록아이디
+    private User createdById;
+
 
 
 }

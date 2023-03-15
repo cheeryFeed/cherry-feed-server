@@ -12,10 +12,10 @@ spring:
         naming:
           physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy #디폴트 카멜->_ 방식 자동변환
         use-new-id-generator-mappings: false
-      show-sql: true #system.out 콘솔로 출력된다.
+      #show-sql: true #system.out 콘솔로 출력된다.
       properties:
         hibernate:
-          show_sql: true #하이버네이트가 생성하고 실행하는 SQL을 확인할 수 있다. #system.out 콘솔로 출력된다.
+          #show_sql: true #하이버네이트가 생성하고 실행하는 SQL을 확인할 수 있다. #system.out 콘솔로 출력된다.
           use_sql_comments: ture
         hibernate.format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
