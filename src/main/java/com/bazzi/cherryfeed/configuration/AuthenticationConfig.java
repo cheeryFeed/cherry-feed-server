@@ -28,7 +28,7 @@ public class AuthenticationConfig {
                 .csrf().disable()      //크로스사이트기능
                 .cors().and()          //크로스사이트에서 도메인이다를때 허용한다.
                 .authorizeRequests()
-                .antMatchers("/api/v1/users/join" , "/api/v1/users/login").permitAll() //join,loin은 언제나 허용한다.
+                .antMatchers("/api/v1/users/join" , "/api/v1/users/login" , "/nickname").permitAll() //join,loin은 언제나 허용한다.
                 .antMatchers(HttpMethod.POST, "/api/v1/users/**").authenticated() //비허용
                 .and()
                 .sessionManagement()

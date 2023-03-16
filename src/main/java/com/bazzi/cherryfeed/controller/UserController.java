@@ -4,11 +4,13 @@ import com.bazzi.cherryfeed.domain.dto.UserJoinRequest;
 import com.bazzi.cherryfeed.domain.dto.UserLoginRequest;
 import com.bazzi.cherryfeed.model.User2;
 import com.bazzi.cherryfeed.repository.UserRepository;
+import com.bazzi.cherryfeed.service.JoinService;
 import com.bazzi.cherryfeed.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final JoinService joinService;
 
     @ApiOperation(value = "회원가입")
     @PostMapping("/join") // URI=  api/v1/users/join - post요청시 회원가입 진행
@@ -34,6 +37,21 @@ public class UserController {
     public ResponseEntity<String> login(@RequestBody UserLoginRequest dto) {
         String token = userService.login(dto.getEmail(), dto.getPw());
         return ResponseEntity.ok().body(token);
+    }
+
+    //************회원가입 닉네임 중복 조회 API*****************
+    @GetMapping("/duplicationcheck/nickname")
+    public ResponseEntity<String> duplicationcheckNickname(
+
+            @RequestParam(name = "nickname",required = true) String nickname){
+        joinService.duplicationCheckNicknameService(nickname);
+        return ResponseEntity.ok().body("닉네임 사용 가능.");
+    }
+    //************연결코드 발급 API*****************
+    @GetMapping("/create/connectcode")
+    public ResponseEntity<String> createConnectCode(){
+        joinService.
+        return ResponseEntity.ok().body("닉네임 사용 가능.");
     }
 
 

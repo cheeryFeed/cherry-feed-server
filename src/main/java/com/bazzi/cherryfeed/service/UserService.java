@@ -30,8 +30,8 @@ public class UserService {
         String password   = userJoinRequestDto.getPassword(); //비밀번호
         String userName   = userJoinRequestDto.getUserName(); //회원이름
         String nickName   = userJoinRequestDto.getNickname(); //닉네임
-        String birth   = userJoinRequestDto.getBirth(); //생년월일
-        String isTerms = userJoinRequestDto.getIsTerms(); //이용약관
+        String birth      = userJoinRequestDto.getBirth(); //생년월일
+        Boolean isTerms   = userJoinRequestDto.getIsTerms(); //이용약관
         String phone      = userJoinRequestDto.getPhone();    //휴대폰번호
         String gender     = userJoinRequestDto.getGender();   //성별
 

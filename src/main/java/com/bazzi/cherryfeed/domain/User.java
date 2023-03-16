@@ -26,7 +26,7 @@ public class User {
     private String modifyAt;       //수정일 varchar(16)
     private String socialProvider; //social_provider varchar(16)
     private String socialId;       //social_id varchar(16)
-    private String isTerms;        //이용약관(개인정보) varchar(16)
+    private Boolean isTerms;        //이용약관(개인정보) boolean
     private String connectCode;    //고유연결코드 varchar(16)
     private Long imgId;            //프로필사진 varchar(16)
     private String introduce;      //소개글 varchar(16)

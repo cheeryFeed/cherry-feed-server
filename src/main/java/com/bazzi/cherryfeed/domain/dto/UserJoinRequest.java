@@ -25,7 +25,7 @@ public class UserJoinRequest {
 
     private String social_provider;//social_provider varchar(16)
     private String socialId;      //social_id varchar(16)
-    private String isTerms;     //이용약관(개인정보) varchar(1)
+    private Boolean isTerms;     //이용약관(개인정보) Boolean
     private String phone;          //휴대폰번호 varchar(20)
     private String gender;         //성별 varchar(1)
     //private String connect_cd;     //고유연결코드 varchar(16)

@@ -1,3 +1,9 @@
+server:
+  servlet:
+    encoding:
+      charset: utf-8
+      force: true
+
 spring:
   # 주석을 해도 안해도 상관x, 설사 틀린내용이라도. 우선순위가 docker-compose내용으로 하기 때문
     datasource:
@@ -19,6 +25,7 @@ spring:
           use_sql_comments: ture
         hibernate.format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+
 
 jwt:
   token:
