@@ -28,5 +28,7 @@ public class Couple {
     //연관관계의 주인을 설정할 때 주인을 따로 설정하는 것이 아니고 자신이 이 연관관계의 주인이 아님을 설정해줘야 합니다.
     @OneToMany(mappedBy = "couple")  //FK가 없는쪽에 mappedBy를 써주는것이 좋다.
     private List<User> users= new ArrayList<>();
+    //@OneToMany(mappedBy = "couple_id")
+    //private List<Anvsy> anvsies= new ArrayList<>();
 
 }

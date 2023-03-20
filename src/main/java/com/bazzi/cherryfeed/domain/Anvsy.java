@@ -21,7 +21,7 @@ public class Anvsy {
     private String anvsyNm;     //기념일 제목
     private Date anvsyAt;        //기념일자
     private Long imgId;         //이미지 아이디
-    private Long status;        //1:반복 , 2:목표
+    private int status;        //1:반복 , 2:목표
     @ManyToOne
     @JoinColumn(name = "couple_id") //커플아이디
     private Couple coupleId;
