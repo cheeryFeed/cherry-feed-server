@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(value = "api/v1/anvsy")
+@RequestMapping(value = "api/v1/anvsy" , produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 public class AnvsyController {
 

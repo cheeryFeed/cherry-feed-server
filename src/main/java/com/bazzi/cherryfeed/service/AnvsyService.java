@@ -31,6 +31,7 @@ public class AnvsyService {
                 .status(anvsyRequest.getStatus())
                 .coupleId(coupleId)
                 .build();
+        anvsyRepository.save(anvsy);
         return "SUCCES";
     }
 }
