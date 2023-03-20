@@ -34,6 +34,7 @@ public class UserService {
         Boolean isTerms   = userJoinRequestDto.getIsTerms(); //이용약관
         String phone      = userJoinRequestDto.getPhone();    //휴대폰번호
         String gender     = userJoinRequestDto.getGender();   //성별
+        String connectCode= userJoinRequestDto.getConnect_code();
 
         // user name 중복 체크
         userRepository.findByEmail(email)
@@ -50,6 +51,7 @@ public class UserService {
                 .isTerms(isTerms)
                 .phone(phone)
                 .gender(gender)
+                .connectCode(connectCode)
                 .build();
 
         userRepository.save(user);

@@ -1,5 +1,6 @@
 package com.bazzi.cherryfeed.service;
 
+import com.bazzi.cherryfeed.domain.User;
 import com.bazzi.cherryfeed.exception.AppException;
 import com.bazzi.cherryfeed.exception.ErrorCode;
 import com.bazzi.cherryfeed.repository.UserRepository;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Random;
 
 @Slf4j
@@ -29,7 +31,7 @@ public class JoinService {
         return "SUCCES";
     }
     //연결코드 생성 서비스 로직
-    public String createCoupon() {
+    public String createCode() {
         Random rd = new Random();
         StringBuilder sb = new StringBuilder();
         String randomCode;
@@ -37,13 +39,18 @@ public class JoinService {
             char ch = chs[rd.nextInt(chs.length)];
             sb.append(ch);
         }
-        randomCode = sb.toString();
+        return randomCode = sb.toString();
 
-        userRepository.findByConnectCode(randomCode)
-                .ifPresent(code -> {
-                    log.error(code+"는 이미 있습니다.");
 
-                });
-        return randomCode;
+    }
+    //생성한 연결코드 얻는 로직
+    public String getCreateConnectCode(){
+        String randomCode = createCode();
+        Optional<User> findedCode = userRepository.findByConnectCode(randomCode);
+        if(findedCode.isPresent()){
+            return "중복코드";
+        }else{
+            return randomCode;
+        }
     }
 }

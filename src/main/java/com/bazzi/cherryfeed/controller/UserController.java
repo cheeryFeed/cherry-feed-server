@@ -50,9 +50,10 @@ public class UserController {
     //************연결코드 발급 API*****************
     @GetMapping("/create/connectcode")
     public ResponseEntity<String> createConnectCode(){
-        joinService.
-        return ResponseEntity.ok().body("닉네임 사용 가능.");
+        String createConnectCode = joinService.getCreateConnectCode();
+        return ResponseEntity.ok().body(createConnectCode);
     }
+
 
 
 

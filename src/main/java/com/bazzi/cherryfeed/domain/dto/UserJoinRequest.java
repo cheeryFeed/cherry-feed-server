@@ -28,7 +28,7 @@ public class UserJoinRequest {
     private Boolean isTerms;     //이용약관(개인정보) Boolean
     private String phone;          //휴대폰번호 varchar(20)
     private String gender;         //성별 varchar(1)
-    //private String connect_cd;     //고유연결코드 varchar(16)
+    private String connect_code;     //고유연결코드 varchar(16)
     //private String profile_img;    //프로필사진 varchar(16)
     //private String introduce;      //소개글 varchar(16)
     //private String link;           //링크 varchar(16)

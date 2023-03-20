@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity //JPA에서 관리할때 JPA가 사용하는 객체를 의미할때
 @AllArgsConstructor
@@ -40,5 +42,15 @@ public class User {
     @OneToOne
     @JoinColumn(name = "withdrawal_detail_id") //서비스탈퇴이력아이디
     private WithdrawalDetail withdrawalDetailId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "couple_id")
+    private Couple couple; //couple_id
+
+    public void updateUserCoupleId(Long id){
+        this.id = id;
+    }
+
+
 
 }
