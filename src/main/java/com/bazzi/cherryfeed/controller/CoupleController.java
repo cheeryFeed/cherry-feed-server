@@ -1,7 +1,7 @@
 package com.bazzi.cherryfeed.controller;
 
 
-import com.bazzi.cherryfeed.domain.dto.CoupleConnectRequest;
+import com.bazzi.cherryfeed.domain.dto.CoupleConnectRequestDto;
 import com.bazzi.cherryfeed.service.CoupleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -22,7 +22,7 @@ public class CoupleController { //토큰이 발급된 대상만 이용가능한 
 
     @ApiOperation(value = "커플연결등록")
     @PostMapping("/connecting")
-    public ResponseEntity<String> connecting(Authentication authentication, @RequestBody CoupleConnectRequest connectCodeDto) {
+    public ResponseEntity<String> connecting(Authentication authentication, @RequestBody CoupleConnectRequestDto connectCodeDto) {
         String email = authentication.getName();//이메일
         String receiveByUserEmail = coupleService.save(email, connectCodeDto.getConnectCode());
 

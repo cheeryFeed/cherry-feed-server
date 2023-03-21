@@ -1,7 +1,7 @@
 package com.bazzi.cherryfeed.service;
 
 import com.bazzi.cherryfeed.domain.User;
-import com.bazzi.cherryfeed.domain.dto.UserJoinRequest;
+import com.bazzi.cherryfeed.domain.dto.UserJoinRequestDto;
 import com.bazzi.cherryfeed.exception.AppException;
 import com.bazzi.cherryfeed.exception.ErrorCode;
 import com.bazzi.cherryfeed.repository.UserRepository;
@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -25,7 +23,7 @@ public class UserService {
     private String key;
     private Long expireTimeMs = 1000 * 60 * 60l; //1시간
 
-    public String join(UserJoinRequest userJoinRequestDto){
+    public String join(UserJoinRequestDto userJoinRequestDto){
         String email      = userJoinRequestDto.getEmail();    //로그인 이메일
         String password   = userJoinRequestDto.getPassword(); //비밀번호
         String userName   = userJoinRequestDto.getUserName(); //회원이름

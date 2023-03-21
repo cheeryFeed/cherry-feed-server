@@ -1,16 +1,16 @@
 package com.bazzi.cherryfeed.controller;
 
-import com.bazzi.cherryfeed.domain.dto.AnvsyRequest;
+import com.bazzi.cherryfeed.domain.dto.AnvsyRequestDto;
+import com.bazzi.cherryfeed.domain.dto.AnvsyResponseDto;
 import com.bazzi.cherryfeed.service.AnvsyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Api(tags = "기념일")
 @RestController
@@ -22,9 +22,16 @@ public class AnvsyController {
 
     @ApiOperation(value = "기념일등록")
     @PostMapping("/post-anvsy")
-    public ResponseEntity<String> createAnvsy(Authentication authentication, @RequestBody AnvsyRequest anvsyRequest){
+    public ResponseEntity<String> createAnvsy(Authentication authentication, @RequestBody AnvsyRequestDto anvsyRequestDto){
         String userEmail = authentication.getName();//이메일
-        anvsyService.createAnvsy(userEmail,anvsyRequest);
+        anvsyService.createAnvsy(userEmail, anvsyRequestDto);
         return ResponseEntity.ok().body("등록완료.");
+    }
+    @ApiOperation(value = "기념일조회")
+    @GetMapping
+    public ResponseEntity<List> readAnvsy(Authentication authentication){
+        String userEmail = authentication.getName();//이메일
+        List<AnvsyResponseDto> anvsyResponseDtoList = anvsyService.readAnvsy(userEmail);
+        return ResponseEntity.ok().body(anvsyResponseDtoList);
     }
 }

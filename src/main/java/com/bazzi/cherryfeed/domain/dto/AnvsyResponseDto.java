@@ -2,17 +2,18 @@ package com.bazzi.cherryfeed.domain.dto;
 
 import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
-
-@ApiModel(value = "기념일등록모델")
+@ApiModel(value = "기념일등록응답모델")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class AnvsyRequest {
+@Builder
+public class AnvsyResponseDto {
+    private Long id;
     private String anvsyNm;
     private Date anvsyAt;
     //이미지 추가해야함

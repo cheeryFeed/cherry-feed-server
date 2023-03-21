@@ -20,7 +20,7 @@ public class CheckList {
     //private Long calendarId;     //일정고유ID
     private String content;      //내용(체크리스트)
     private boolean isFinish;    //체크유무 true,false
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calendar_id")  //일정고유ID
     private CoupleCalendar calendarId;
 

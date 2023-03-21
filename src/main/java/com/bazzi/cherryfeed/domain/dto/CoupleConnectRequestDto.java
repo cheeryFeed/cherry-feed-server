@@ -5,11 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@ApiModel(value = "로그인모델")
+@ApiModel(value = "커플 연결 모델")
 @AllArgsConstructor
 @Getter
 @NoArgsConstructor
-public class UserLoginRequest {
-    private String email;
-    private String pw;
+public class CoupleConnectRequestDto {
+    private String connectCode;
+
 }

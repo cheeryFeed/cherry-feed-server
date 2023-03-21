@@ -1,24 +1,20 @@
 package com.bazzi.cherryfeed.controller;
 
-import com.bazzi.cherryfeed.domain.dto.UserJoinRequest;
-import com.bazzi.cherryfeed.domain.dto.UserLoginRequest;
+import com.bazzi.cherryfeed.domain.dto.UserJoinRequestDto;
+import com.bazzi.cherryfeed.domain.dto.UserLoginRequestDto;
 import com.bazzi.cherryfeed.exception.AppException;
 import com.bazzi.cherryfeed.exception.ErrorCode;
 import com.bazzi.cherryfeed.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -48,7 +44,7 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/users/join")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName,password))))
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequestDto(userName,password))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -66,7 +62,7 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/users/join")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserJoinRequest(userName,password))))
+                        .content(objectMapper.writeValueAsBytes(new UserJoinRequestDto(userName,password))))
                 .andDo(print())
                 .andExpect(status().isConflict());
     }
@@ -84,7 +80,7 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/users/login")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName,password))))
+                        .content(objectMapper.writeValueAsBytes(new UserLoginRequestDto(userName,password))))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -102,7 +98,7 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/users/login")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName,password))))
+                        .content(objectMapper.writeValueAsBytes(new UserLoginRequestDto(userName,password))))
                 .andDo(print())
                 .andExpect(status().isNotFound());
     }
@@ -120,7 +116,7 @@ class UserControllerTest {
         mockMvc.perform(post("/api/v1/users/login")
                         .with(csrf())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsBytes(new UserLoginRequest(userName,password))))
+                        .content(objectMapper.writeValueAsBytes(new UserLoginRequestDto(userName,password))))
                 .andDo(print())
                 .andExpect(status().isUnauthorized());
     }

@@ -1,23 +1,15 @@
 package com.bazzi.cherryfeed.controller;
 
-import com.bazzi.cherryfeed.domain.dto.UserJoinRequest;
-import com.bazzi.cherryfeed.domain.dto.UserLoginRequest;
-import com.bazzi.cherryfeed.model.User2;
-import com.bazzi.cherryfeed.repository.UserRepository;
+import com.bazzi.cherryfeed.domain.dto.UserJoinRequestDto;
+import com.bazzi.cherryfeed.domain.dto.UserLoginRequestDto;
 import com.bazzi.cherryfeed.service.JoinService;
 import com.bazzi.cherryfeed.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
 @Api(tags = "회원가입/로그인")
 @RestController
 @RequestMapping(value = "/api/v1/users" , produces = "application/json; charset=utf8") //자꾸 한글깨지길래 utf-8변환함;
@@ -28,14 +20,14 @@ public class UserController {
 
     @ApiOperation(value = "회원가입" , notes = "회원가입을 진행한다. 회원가입이 성공하면 200응답과 함께 회원가입이 성공하였습니다.가 반환됨.")
     @PostMapping("/join") // URI=  api/v1/users/join - post요청시 회원가입 진행
-    public ResponseEntity<String> join(@RequestBody UserJoinRequest userJoinRequestDto){
+    public ResponseEntity<String> join(@RequestBody UserJoinRequestDto userJoinRequestDto){
         userService.join(userJoinRequestDto);
         return ResponseEntity.ok().body("회원가입이 성공하였습니다.");
     };
 
     @ApiOperation(value = "로그인" , notes = "로그인을 진행한다. 회원가입이 성공하면 200응답과 함께 바디에 토큰이 발급됨")
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginRequest dto) {
+    public ResponseEntity<String> login(@RequestBody UserLoginRequestDto dto) {
         String token = userService.login(dto.getEmail(), dto.getPw());
         return ResponseEntity.ok().body(token);
     }

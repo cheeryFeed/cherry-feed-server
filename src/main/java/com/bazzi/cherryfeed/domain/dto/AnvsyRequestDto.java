@@ -7,14 +7,13 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@ApiModel(value = "회원탈퇴모델")
+@ApiModel(value = "기념일등록요청모델")
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-public class WithdrawalRequest {
-    String createdById; //탈퇴아이디
-    Long status;    //탈퇴사유
-    String content;  //내용
-    Date created_at; //탈퇴일자
-    
+public class AnvsyRequestDto {
+    private String anvsyNm;
+    private Date anvsyAt;
+    //이미지 추가해야함
+    private int status;
 }
