@@ -41,7 +41,7 @@ public class CoupleCalendar {
     private User createdById;
 
     @OneToMany(mappedBy = "calendarId")
-    private List<CheckList> checkLists= new ArrayList<>(); //캘린더 하나에 들어있는 체크리스트들
+    private List<CheckList> checkLists= new ArrayList<>(); //캘린더 하나에 들어있는 체크리스트들ㅋ
 
 
 
