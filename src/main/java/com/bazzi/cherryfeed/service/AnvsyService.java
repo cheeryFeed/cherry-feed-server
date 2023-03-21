@@ -18,7 +18,6 @@ import java.util.Optional;
 @Slf4j
 public class AnvsyService {
     private final UserRepository userRepository;
-    private final CoupleRepository coupleRepository;
     private final AnvsyRepository anvsyRepository;
 
     public String createAnvsy(String userEmail,AnvsyRequest anvsyRequest){

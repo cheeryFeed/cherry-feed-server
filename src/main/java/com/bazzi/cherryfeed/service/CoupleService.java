@@ -9,6 +9,7 @@ import com.bazzi.cherryfeed.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -22,6 +23,7 @@ public class CoupleService {
     private final UserRepository userRepository;
     private final CoupleRepository coupleRepository;
 
+    @Transactional
     public String save (String email,String connectCode){
         User requestUser = userRepository.findUserByEmail(email);
         User receiveUser = userRepository.findUserByConnectCode(connectCode);
@@ -45,9 +47,10 @@ public class CoupleService {
                     .coupleName(nickname1+"님과"+nickname2+"커플")
                     .build();
             Couple createdCouple = coupleRepository.save(couple);
-            requestUser.updateUserCoupleId(createdCouple.getId());
-            receiveUser.updateUserCoupleId(createdCouple.getId());
-
+            requestUser.updateUserCoupleId(createdCouple);
+            receiveUser.updateUserCoupleId(createdCouple);
+            //userRepository.save(requestUser);
+            //userRepository.save(receiveUser); //@Transactional 더티체킹방식으로 저장
         }
         return receiveUser.getEmail();
     }

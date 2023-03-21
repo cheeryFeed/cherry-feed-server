@@ -4,9 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity //JPA에서 관리할때 JPA가 사용하는 객체를 의미할때
@@ -24,8 +27,10 @@ public class User {
     private String email;          //이메일 varchar(50)
     private String nickname;       //닉네임 varchar(16)
     private String birth;          //생년월일 date
-    private String createdAt;      //생성일 varchar(16)
-    private String modifyAt;       //수정일 varchar(16)
+    @CreationTimestamp
+    private Date createdAt;      //생성일 varchar(16)
+    @LastModifiedDate
+    private Date modifyAt;       //수정일 varchar(16)
     private String socialProvider; //social_provider varchar(16)
     private String socialId;       //social_id varchar(16)
     private Boolean isTerms;        //이용약관(개인정보) boolean
@@ -47,8 +52,8 @@ public class User {
     @JoinColumn(name = "couple_id")
     private Couple couple; //couple_id
 
-    public void updateUserCoupleId(Long id){
-        this.id = id;
+    public void updateUserCoupleId(Couple id){
+        couple = id;
     }
 
 
