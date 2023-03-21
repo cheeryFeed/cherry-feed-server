@@ -30,28 +30,28 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     // API마다 구분짓기 위한 설정.
     @Bean
-    public Docket lucaApi() {
-        return getDocket("루카", Predicates.or(
+    public Docket userApi() {
+        return getDocket("회원가입/로그인", Predicates.or(
                 PathSelectors.regex("/api/v1/users.*")));
     }
     @Bean
-    public Docket productApi() {
-        return getDocket("유저", Predicates.or(
-                PathSelectors.regex("/user.*")));
+    public Docket coupleApi() {
+        return getDocket("커플", Predicates.or(
+                PathSelectors.regex("/api/v1/connection.*")));
     }
 
 
     @Bean
-    public Docket searchApi() {
-        return getDocket("예약", Predicates.or(
-                PathSelectors.regex("/reservation.*")));
+    public Docket calendarApi() {
+        return getDocket("캘린더", Predicates.or(
+                PathSelectors.regex("/api/v1/calender.*")));
     }
 
 
     @Bean
     public Docket commonApi() {
-        return getDocket("공통", Predicates.or(
-                PathSelectors.regex("/test.*")));
+        return getDocket("기념일", Predicates.or(
+                PathSelectors.regex("api/v1/anvsy.*")));
 
     }
 

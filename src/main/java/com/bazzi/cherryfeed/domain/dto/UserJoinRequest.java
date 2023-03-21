@@ -18,7 +18,7 @@ public class UserJoinRequest {
     private String password;
 
 
-
+    @ApiModelProperty
     private String email;          //이메일 varchar(50)
     private String nickname;       //닉네임 varchar(16)
     private String birth;       //생년월일 date

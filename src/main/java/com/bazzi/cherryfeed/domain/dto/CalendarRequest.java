@@ -1,11 +1,12 @@
 package com.bazzi.cherryfeed.domain.dto;
 
+import io.swagger.annotations.ApiModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-
+@ApiModel(value = "캘린더등록모델")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
