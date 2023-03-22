@@ -20,5 +20,7 @@ public class FileStore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //DB에서 값을 증가시키는 전략 IDENTITY -MySQL auto increment
     private Long id;             //저장소아이디
+    private String fileName;
+    private String type;
     private String saveLocation;     //커플아이디
 }

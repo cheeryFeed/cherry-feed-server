@@ -10,7 +10,7 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/cherry_feed
       username: root
-      password: '12341234' #PC 1234 , 노트북 12341234
+      password: '1234' #PC 1234 , 노트북 12341234
     jpa:
       open-in-view: true
       hibernate:
@@ -25,6 +25,10 @@ spring:
           use_sql_comments: ture
         hibernate.format_sql: true
         dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    servlet:
+      multipart:
+        max-file-size: 50MB
+        max-request-size: 100MB
 
 
 jwt:
@@ -39,6 +43,7 @@ logging:
         type:
           descriptor:
             sql: trace #SQL에 바인딩 되는 파라미터를 확인할 수 있다.
+
 
 
 
