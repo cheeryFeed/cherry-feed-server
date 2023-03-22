@@ -2,12 +2,14 @@ package com.bazzi.cherryfeed.controller;
 
 import com.bazzi.cherryfeed.domain.dto.UserJoinRequestDto;
 import com.bazzi.cherryfeed.domain.dto.UserLoginRequestDto;
+import com.bazzi.cherryfeed.domain.dto.WithdrawalRequestDto;
 import com.bazzi.cherryfeed.service.JoinService;
 import com.bazzi.cherryfeed.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "회원가입/로그인")
@@ -48,6 +50,19 @@ public class UserController {
         String createConnectCode = joinService.getCreateConnectCode();
         return ResponseEntity.ok().body(createConnectCode);
     }
+
+
+    @ApiOperation(value = "회원탈퇴" , notes = "회원탈퇴. 탈퇴시 탈퇴이력이 남고, 회원테이블의 상태가 9로 변경된다.")
+    @PostMapping("/withdrawal") // URI=  api/v1/users/join - post요청시 회원가입 진행
+    public ResponseEntity<String> withdrawal(
+            Authentication authentication, @RequestBody WithdrawalRequestDto withdrawalRequestDto){
+        String userEmail = authentication.getName();
+
+        userService.withdrawal(userEmail,withdrawalRequestDto);
+        return ResponseEntity.ok().body("회원탈퇴 완료");
+    }
+
+
 
 
 

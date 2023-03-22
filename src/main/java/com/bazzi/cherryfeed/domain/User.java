@@ -55,6 +55,10 @@ public class User {
     public void updateUserCoupleId(Couple id){
         couple = id;
     }
+    public void updateUserWithdrawal(WithdrawalDetail withdrawalDetailId,String status){
+        this.withdrawalDetailId = withdrawalDetailId;
+        this.status = status;
+    }
 
 
 

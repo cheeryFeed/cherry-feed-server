@@ -12,9 +12,6 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 public class WithdrawalRequestDto {
-    String createdById; //탈퇴아이디
     Long status;    //탈퇴사유
     String content;  //내용
-    Date created_at; //탈퇴일자
-    
 }

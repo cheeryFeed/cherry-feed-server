@@ -1,16 +1,20 @@
 package com.bazzi.cherryfeed.service;
 
 import com.bazzi.cherryfeed.domain.User;
+import com.bazzi.cherryfeed.domain.WithdrawalDetail;
 import com.bazzi.cherryfeed.domain.dto.UserJoinRequestDto;
+import com.bazzi.cherryfeed.domain.dto.WithdrawalRequestDto;
 import com.bazzi.cherryfeed.exception.AppException;
 import com.bazzi.cherryfeed.exception.ErrorCode;
 import com.bazzi.cherryfeed.repository.UserRepository;
+import com.bazzi.cherryfeed.repository.WithdrawalDetailRepository;
 import com.bazzi.cherryfeed.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +22,8 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final WithdrawalDetailRepository withdrawalDetailRepository;
+
     private final BCryptPasswordEncoder encoder;
     @Value("${jwt.token.secret}") //application.yml에
     private String key;
@@ -50,6 +56,7 @@ public class UserService {
                 .phone(phone)
                 .gender(gender)
                 .connectCode(connectCode)
+                .status("1")
                 .build();
 
         userRepository.save(user);
@@ -72,5 +79,18 @@ public class UserService {
         
         // 앞에서 Exception안나면 토큰 발행
         return token;
+    }
+
+    @Transactional
+    public String withdrawal(String email, WithdrawalRequestDto withdrawalRequestDto){
+        User user = userRepository.findUserByEmail(email);
+        WithdrawalDetail withdrawalDetail = WithdrawalDetail.builder()
+                .status(withdrawalRequestDto.getStatus())
+                .content(withdrawalRequestDto.getContent())
+                .createdById(user)
+                .build();
+        withdrawalDetailRepository.save(withdrawalDetail);
+        user.updateUserWithdrawal(withdrawalDetail,"9");
+        return "SUCCES";
     }
 }
