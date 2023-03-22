@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -20,7 +21,9 @@ public class Post {
     //private Long createdById;   //등록자아이디
     //private Long calId;         //일정고유ID
     private String postNm;      //게시물제목
+    private String postContent;
     private String location;    //장소
+    @CreationTimestamp
     private Date postAt ;       //작성일자
     private Long imgId;         //이미지아이디
     private Long postView;      //조회수

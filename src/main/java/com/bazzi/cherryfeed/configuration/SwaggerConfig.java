@@ -54,6 +54,12 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 PathSelectors.regex("api/v1/anvsy.*")));
 
     }
+    @Bean
+    public Docket postApi() {
+        return getDocket("게시물", Predicates.or(
+                PathSelectors.regex("api/v1/post.*")));
+
+    }
 
     @Bean
     public Docket allApi() {
