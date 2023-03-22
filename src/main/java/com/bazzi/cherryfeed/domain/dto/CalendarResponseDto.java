@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+import java.util.List;
 
 @ApiModel(value = "캘린더조회응답모델")
 @Getter
@@ -25,4 +26,5 @@ public class CalendarResponseDto {
     private String content;     //내용(다이어리)
     private Date alarmAt;       //알림일자
     private int type;          //유형 - 계획1,일정2
+    private List<CheckListResponseDto> checkList;
 }

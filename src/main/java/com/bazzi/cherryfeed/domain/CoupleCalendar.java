@@ -24,7 +24,7 @@ public class CoupleCalendar {
     private Long partiId1;      //참여자아이디1
     private Long partiId2;      //참여자아이디2
     private String title;       //제목
-    private boolean isAllDay; //종일 여부
+    private Boolean isAllDay; //종일 여부
     private Date startAt;       //시작일자
     private Date endAt;         //종료일자
     private Long imgId;         //이미지아이디

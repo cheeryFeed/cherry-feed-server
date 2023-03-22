@@ -1,6 +1,5 @@
 package com.bazzi.cherryfeed.controller;
 
-import com.bazzi.cherryfeed.domain.dto.AnvsyResponseDto;
 import com.bazzi.cherryfeed.domain.dto.CalendarRequestDto;
 import com.bazzi.cherryfeed.domain.dto.CalendarResponseDto;
 import com.bazzi.cherryfeed.service.CoupleCalendarService;
@@ -17,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/api/v1/calender" , produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
-public class CoupleCalendarController {
+public class CalendarController {
     private final CoupleCalendarService coupleCalendarService;
 
     @ApiOperation(value = "캘린더등록")
