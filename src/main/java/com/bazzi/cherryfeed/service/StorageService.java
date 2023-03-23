@@ -1,6 +1,7 @@
 package com.bazzi.cherryfeed.service;
 
 import com.bazzi.cherryfeed.domain.FileStore;
+import com.bazzi.cherryfeed.domain.dto.FileUploadResponseDto;
 import com.bazzi.cherryfeed.repository.FileDataRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,22 +20,25 @@ public class StorageService {
     private final String FOLDER_PATH = "C:\\cherry-feed-server\\src\\main\\resources\\files\\";
 
 
-    public String uploadImageToFileSystem(MultipartFile file) throws IOException {
+    public FileUploadResponseDto uploadImageToFileSystem(MultipartFile file) throws IOException {
         log.info("upload file: {}", file.getOriginalFilename());
         String filePath = FOLDER_PATH + file.getOriginalFilename();
-        FileStore fileStore = fileDataRepository.save(
-                FileStore.builder()
-                        .fileName(file.getOriginalFilename())
-                        .type(file.getContentType())
-                        .saveLocation(filePath)
-                        .build()
-        );
+        FileStore fildstore = FileStore.builder()
+                .fileName(file.getOriginalFilename())
+                .type(file.getContentType())
+                .saveLocation(filePath)
+                .build();
+        FileStore fileStore = fileDataRepository.save(fildstore);
 
         // 파일 결로
         file.transferTo(new File(filePath));
 
         if (fileStore != null) {
-            return "file uploaded successfully! filePath : " + filePath;
+            FileUploadResponseDto dto = FileUploadResponseDto.builder()
+                    .mesage("file uploaded successfully! filePath : " + filePath)
+                    .fileId(fildstore.getId())
+                    .build();
+            return dto;
         }
 
         return null;

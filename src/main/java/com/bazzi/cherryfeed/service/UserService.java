@@ -39,6 +39,7 @@ public class UserService {
         String phone      = userJoinRequestDto.getPhone();    //휴대폰번호
         String gender     = userJoinRequestDto.getGender();   //성별
         String connectCode= userJoinRequestDto.getConnect_code();
+        Long imgId        = userJoinRequestDto.getImgId();
 
         // user name 중복 체크
         userRepository.findByEmail(email)
@@ -56,6 +57,7 @@ public class UserService {
                 .phone(phone)
                 .gender(gender)
                 .connectCode(connectCode)
+                .imgId(imgId)
                 .status("1")
                 .build();
 

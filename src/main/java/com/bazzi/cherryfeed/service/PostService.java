@@ -29,7 +29,7 @@ public class PostService {
                 .postNm(postRequestDto.getPostNm())
                 .postContent(postRequestDto.getPostContent())
                 .location(postRequestDto.getLocation())
-                //이미지 추가해야함
+                .imgId(postRequestDto.getImgId())
                 .createdById(fidedUser)
                 .calId(coupleCalendar)
                 .build();

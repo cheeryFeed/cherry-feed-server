@@ -43,6 +43,18 @@ public class CoupleCalendar {
     @OneToMany(mappedBy = "calendarId")
     private List<CheckList> checkLists= new ArrayList<>(); //캘린더 하나에 들어있는 체크리스트들ㅋ
 
-
-
+    public void updateCalendar(Long partiId1,Long partiId2,String title,Boolean isAllDay,Date startAt,Date endAt
+                               ,Long imgId,String location,String status,String content,Date alarmAt){
+        this.partiId1=partiId1;
+        this.partiId2=partiId2;
+        this.title=title;
+        this.isAllDay=isAllDay;
+        this.startAt=startAt;
+        this.endAt=endAt;
+        this.imgId=imgId;
+        this.location=location;
+        this.status=status;
+        this.content=content;
+        this.alarmAt=alarmAt;
+    }
 }

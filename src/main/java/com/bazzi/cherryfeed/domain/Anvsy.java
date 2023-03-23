@@ -25,4 +25,11 @@ public class Anvsy {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "couple_id") //커플아이디
     private Couple coupleId;
+
+    public void updateAnvsy(String anvsyNm,Long imgId,int status,Date anvsyAt){
+        this.anvsyNm = anvsyNm;
+        this.imgId = imgId;
+        this.status=status;
+        this.anvsyAt=anvsyAt;
+    }
 }

@@ -29,6 +29,7 @@ public class UserJoinRequestDto {
     private String phone;          //휴대폰번호 varchar(20)
     private String gender;         //성별 varchar(1)
     private String connect_code;     //고유연결코드 varchar(16)
+    private Long imgId;
     //private String profile_img;    //프로필사진 varchar(16)
     //private String introduce;      //소개글 varchar(16)
     //private String link;           //링크 varchar(16)

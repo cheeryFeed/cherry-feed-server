@@ -16,6 +16,6 @@ public class AnvsyResponseDto {
     private Long id;
     private String anvsyNm;
     private Date anvsyAt;
-    //이미지 추가해야함
+    private Long imgId;
     private int status;
 }

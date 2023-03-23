@@ -10,8 +10,10 @@ import com.bazzi.cherryfeed.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -72,6 +74,7 @@ public class CoupleCalendarService {
 
             for (CheckList checkList : checkListList) {
                 CheckListResponseDto checkListDto = CheckListResponseDto.builder()
+                        .id(checkList.getId())
                         .content(checkList.getContent())
                         .isFinish(checkList.getIsFinish())
                         .build();
@@ -85,7 +88,7 @@ public class CoupleCalendarService {
                     .isAllDay(calendar.getIsAllDay())
                     .startAt(calendar.getStartAt())
                     .endAt(calendar.getEndAt())
-                    //이미지넣어야함.
+                    .imgId(calendar.getImgId())
                     .location(calendar.getLocation())
                     .status(calendar.getStatus())
                     .content(calendar.getContent())
@@ -96,5 +99,39 @@ public class CoupleCalendarService {
             calendarResponseDtoList.add(dto);
         }
         return calendarResponseDtoList; //조회한 일정을 담은 응답 DTO를 반환한다.
+    }
+    @Transactional
+    public String updateCalendar(Long id,CalendarUpdateRequestDto calendarUpdateRequestDto){
+        Date alarmAt = calendarUpdateRequestDto.getAlarmAt();               //알림시간
+        String location = calendarUpdateRequestDto.getLocation();           //캘린더 위치
+        String content = calendarUpdateRequestDto.getContent();             //캘린더 내용
+        int type = calendarUpdateRequestDto.getType();                      //캘린더 타입 1목표,2일정
+        String status = calendarUpdateRequestDto.getStatus();               //일정 상태
+        String title = calendarUpdateRequestDto.getTitle();                 //캘린더 이름
+        Long imgId = calendarUpdateRequestDto.getImgId();                   //캘린더 이미지 아이디
+        Long partiId1 = calendarUpdateRequestDto.getPartiId1();             //참여자아이디1
+        Long partiId2 = calendarUpdateRequestDto.getPartiId2();             //참여자아이디2
+        Date startAt = calendarUpdateRequestDto.getStartAt();               //시작시간
+        Date endAt = calendarUpdateRequestDto.getEndAt();                   //종료시간
+        Boolean isAllDay = calendarUpdateRequestDto.getIsAllDay();          //종일여부
+
+        CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(id).get();
+        coupleCalendar.updateCalendar(partiId1,partiId2,title,isAllDay,startAt,endAt,imgId,location,status,content,alarmAt);
+
+
+        List<CheckListUpdateRequestDto> checkList = calendarUpdateRequestDto.getCheckList();//체크리스트
+        for (CheckListUpdateRequestDto checkListUpdateRequestDto : checkList) {
+            Long checkid = checkListUpdateRequestDto.getId();
+            String checkContent = checkListUpdateRequestDto.getContent();
+            Boolean isFinish = checkListUpdateRequestDto.getIsFinish();
+            CheckList findedCheckList = checkListRepository.findById(checkid).get();
+            findedCheckList.updateCheckList(checkContent,isFinish);
+        }
+        return "SUCCES";
+    }
+    @Transactional
+    public String deleteCalendar(Long id){
+        coupleCalendarRepository.deleteById(id);
+        return "SUCCES";
     }
 }

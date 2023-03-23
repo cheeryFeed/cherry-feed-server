@@ -10,9 +10,12 @@ import com.bazzi.cherryfeed.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +33,27 @@ public class AnvsyService {
                 .anvsyAt(anvsyRequestDto.getAnvsyAt())
                 .status(anvsyRequestDto.getStatus())
                 .coupleId(coupleId)
+                .imgId(anvsyRequestDto.getImgId())
                 .build();
         anvsyRepository.save(anvsy);
+        return "SUCCES";
+    }
+    //기념일 수정 서비스로직
+    @Transactional
+    public String updateAnvsy(Long id ,AnvsyRequestDto anvsyRequestDto){
+
+        String anvsyNm = anvsyRequestDto.getAnvsyNm();   //일정이름
+        int status = anvsyRequestDto.getStatus();        //일정상태
+        Long imgId = anvsyRequestDto.getImgId();         //이미지아이디
+        Date anvsyAt = anvsyRequestDto.getAnvsyAt();     //일정시간
+
+        Anvsy anvsy = anvsyRepository.findById(id).get();
+        anvsy.updateAnvsy(anvsyNm,imgId,status,anvsyAt);
+        return "SUCCES";
+    }
+    @Transactional
+    public String deleteAnvsy(Long id ){
+        anvsyRepository.deleteById(id);
         return "SUCCES";
     }
     public List<AnvsyResponseDto> readAnvsy(String userEmail){
@@ -48,6 +70,7 @@ public class AnvsyService {
                     .anvsyNm(anvsy.getAnvsyNm())
                     .anvsyAt(anvsy.getAnvsyAt())
                     .status(anvsy.getStatus())
+                    .imgId(anvsy.getImgId())
                     .build();
             anvsyResponseDtoList.add(dto);
         }

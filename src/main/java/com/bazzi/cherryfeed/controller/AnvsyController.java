@@ -19,6 +19,13 @@ import java.util.List;
 public class AnvsyController {
 
     private final AnvsyService anvsyService;
+    @ApiOperation(value = "기념일조회")
+    @GetMapping
+    public ResponseEntity<List> readAnvsy(Authentication authentication){
+        String userEmail = authentication.getName();//이메일
+        List<AnvsyResponseDto> anvsyResponseDtoList = anvsyService.readAnvsy(userEmail);
+        return ResponseEntity.ok().body(anvsyResponseDtoList);
+    }
 
     @ApiOperation(value = "기념일등록")
     @PostMapping("/post-anvsy")
@@ -27,11 +34,18 @@ public class AnvsyController {
         anvsyService.createAnvsy(userEmail, anvsyRequestDto);
         return ResponseEntity.ok().body("등록완료.");
     }
-    @ApiOperation(value = "기념일조회")
-    @GetMapping
-    public ResponseEntity<List> readAnvsy(Authentication authentication){
-        String userEmail = authentication.getName();//이메일
-        List<AnvsyResponseDto> anvsyResponseDtoList = anvsyService.readAnvsy(userEmail);
-        return ResponseEntity.ok().body(anvsyResponseDtoList);
+
+    @ApiOperation(value = "기념일수정")
+    @PutMapping("/post-anvsy/{id}")
+    public ResponseEntity<String> updateAnvsy(@PathVariable Long id, @RequestBody AnvsyRequestDto anvsyRequestDto){
+        anvsyService.updateAnvsy(id,anvsyRequestDto);
+        return ResponseEntity.ok().body("수정완료.");
+    }
+
+    @ApiOperation(value = "기념일삭제")
+    @DeleteMapping("/post-anvsy/{id}")
+    public ResponseEntity<String> deleteAnvsy(@PathVariable Long id){
+        anvsyService.deleteAnvsy(id);
+        return ResponseEntity.ok().body("삭제완료.");
     }
 }
