@@ -26,7 +26,7 @@ public class User {
     private String pw;             //비밀번호 varchar(30)
     private String email;          //이메일 varchar(50)
     private String nickname;       //닉네임 varchar(16)
-    private String birth;          //생년월일 date
+    private Date birth;          //생년월일 date
     @CreationTimestamp
     private Date createdAt;      //생성일 varchar(16)
     @LastModifiedDate
@@ -58,6 +58,16 @@ public class User {
     public void updateUserWithdrawal(WithdrawalDetail withdrawalDetailId,String status){
         this.withdrawalDetailId = withdrawalDetailId;
         this.status = status;
+    }
+
+    public void updateUserInfo(String introduce,String link,Boolean isOpen,Long imgId,Boolean isTerms,String phone,String nickname){
+        this.introduce=introduce;
+        this.link=link;
+        this.isOpen=isOpen;
+        this.imgId=imgId;
+        this.isTerms=isTerms;
+        this.phone=phone;
+        this.nickname=nickname;
     }
 
 

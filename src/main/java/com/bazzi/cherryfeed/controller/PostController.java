@@ -26,4 +26,17 @@ public class PostController {
     //@ApiOperation(value = "게시물조회")
     //@GetMapping
 
+    @ApiOperation(value = "게시물수정")
+    @PutMapping("/post-post/{id}")
+    public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto){
+        postService.updatePost(id,postRequestDto);
+        return ResponseEntity.ok().body("등록완료.");
+    }
+    @ApiOperation(value = "게시물삭제")
+    @DeleteMapping("/post-post/{id}")
+    public ResponseEntity<String> deletePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto){
+        postService.deletePost(id);
+        return ResponseEntity.ok().body("삭제완료.");
+    }
+
 }

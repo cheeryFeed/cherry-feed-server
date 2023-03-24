@@ -37,6 +37,14 @@ public class Post {
     @JoinColumn(name = "cal_id") //일정고유ID
     private CoupleCalendar calId;
 
+    public void updatePost(CoupleCalendar calId,String postNm,String postContent,String location,Long imgId){
+        this.postNm=postNm;
+        this.postContent=postContent;
+        this.location=location;
+        this.imgId=imgId;
+        this.calId=calId;
+    }
+
 
 
 

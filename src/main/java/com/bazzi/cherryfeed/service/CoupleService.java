@@ -45,6 +45,7 @@ public class CoupleService {
         }else{
             Couple couple = Couple.builder()
                     .coupleName(nickname1+"님과"+nickname2+"커플")
+                    .stts(1)
                     .build();
             Couple createdCouple = coupleRepository.save(couple);
             requestUser.updateUserCoupleId(createdCouple);
@@ -53,5 +54,12 @@ public class CoupleService {
             //userRepository.save(receiveUser); //@Transactional 더티체킹방식으로 저장
         }
         return receiveUser.getEmail();
+    }
+    @Transactional
+    public String deleteCouple(String email){
+        User user = userRepository.findByEmail(email).get();
+        Couple couple = coupleRepository.findById(user.getCouple().getId()).get();
+        couple.updateCoupleStts(9);
+        return "OK";
     }
 }

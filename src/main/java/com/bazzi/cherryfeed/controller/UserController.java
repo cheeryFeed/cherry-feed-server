@@ -1,8 +1,6 @@
 package com.bazzi.cherryfeed.controller;
 
-import com.bazzi.cherryfeed.domain.dto.UserJoinRequestDto;
-import com.bazzi.cherryfeed.domain.dto.UserLoginRequestDto;
-import com.bazzi.cherryfeed.domain.dto.WithdrawalRequestDto;
+import com.bazzi.cherryfeed.domain.dto.*;
 import com.bazzi.cherryfeed.service.JoinService;
 import com.bazzi.cherryfeed.service.UserService;
 import io.swagger.annotations.Api;
@@ -60,6 +58,21 @@ public class UserController {
 
         userService.withdrawal(userEmail,withdrawalRequestDto);
         return ResponseEntity.ok().body("회원탈퇴 완료");
+    }
+    @ApiOperation(value = "회원정보조회")
+    @GetMapping
+    public ResponseEntity<UserInfoResponseDto> readUser(Authentication authentication){
+        String userEmail = authentication.getName();
+        UserInfoResponseDto userInfoResponseDto = userService.readUser(userEmail);
+        return ResponseEntity.ok().body(userInfoResponseDto);
+    }
+
+    @ApiOperation(value = "회원정보수정")
+    @PutMapping("/post-user")
+    public ResponseEntity<String> updateUser(Authentication authentication, @RequestBody UserRequestUpdateDto userRequestUpdateDto){
+        String userEmail = authentication.getName();
+        userService.userUpdate(userEmail,userRequestUpdateDto);
+        return ResponseEntity.ok().body("업데이트 완료.");
     }
 
 

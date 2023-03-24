@@ -20,9 +20,10 @@ public class Couple {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //DB에서 값을 증가시키는 전략 IDENTITY -MySQL auto increment
     private Long id;             //커플아이디
-    private String coupleName;   //커프이름
+    private String coupleName;   //커플이름
     @CreationTimestamp
     private Date createdAt;      //생성일
+    private int stts;            //커플 상태 1등록 9해지
 
     //자신이 Member의 team에 매핑되어 있으므로 team으로 설정해준 것 입니다.
     //연관관계의 주인을 설정할 때 주인을 따로 설정하는 것이 아니고 자신이 이 연관관계의 주인이 아님을 설정해줘야 합니다.
@@ -30,5 +31,9 @@ public class Couple {
     private List<User> users= new ArrayList<>();
     //@OneToMany(mappedBy = "couple")
     //private List<Anvsy> anvsies= new ArrayList<>();
+
+    public void updateCoupleStts(int stts){
+        this.stts = stts;
+    }
 
 }
