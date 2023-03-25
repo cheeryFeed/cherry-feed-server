@@ -3,6 +3,7 @@ server:
     encoding:
       charset: utf-8
       force: true
+  port: 8090
 
 spring:
   # 주석을 해도 안해도 상관x, 설사 틀린내용이라도. 우선순위가 docker-compose내용으로 하기 때문
@@ -10,7 +11,7 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/cherry_feed
       username: root
-      password: '12341234' #PC 1234 , 노트북 12341234
+      password: '1234' #PC 1234 , 노트북 12341234
     jpa:
       open-in-view: true
       hibernate:

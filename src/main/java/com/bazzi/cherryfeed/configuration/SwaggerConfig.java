@@ -51,18 +51,18 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
     @Bean
     public Docket commonApi() {
         return getDocket("기념일", Predicates.or(
-                PathSelectors.regex("api/v1/anvsy.*")));
+                PathSelectors.regex("/api/v1/anvsy.*")));
 
     }
     @Bean
     public Docket postApi() {
         return getDocket("게시물", Predicates.or(
-                PathSelectors.regex("api/v1/post.*")));
+                PathSelectors.regex("/api/v1/post.*")));
     }
     @Bean
     public Docket fileApi() {
         return getDocket("파일업로드다운로드", Predicates.or(
-                PathSelectors.regex("api/v1/file.*")));
+                PathSelectors.regex("/api/v1/file.*")));
     }
 
 
@@ -91,5 +91,13 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 .validatorUrl("")
                 .build();
     }
-
+    //상대경로
+    //
+    //이미지 업로드 문제
+    //
+    //페이징 처리
+    //
+    //오류코드 처리
+    //
+    //로그인
 }

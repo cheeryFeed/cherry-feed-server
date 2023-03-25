@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Api(tags = "기념일")
 @RestController
-@RequestMapping(value = "api/v1/post" , produces = "application/json; charset=utf8")
+@RequestMapping(value = "/api/v1/post" , produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;

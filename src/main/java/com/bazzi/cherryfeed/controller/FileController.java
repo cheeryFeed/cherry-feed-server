@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @Api(tags = "파일업로드다운로드")
 @RestController
-@RequestMapping(value = "api/v1/file" , produces = "application/json; charset=utf8")
+@RequestMapping(value = "/api/v1/file" , produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 
 public class FileController {

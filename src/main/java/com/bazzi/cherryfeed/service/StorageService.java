@@ -18,6 +18,8 @@ import java.nio.file.Files;
 public class StorageService {
     private final FileDataRepository fileDataRepository;
     private final String FOLDER_PATH = "C:\\cherry-feed-server\\src\\main\\resources\\files\\";
+    //private final String FOLDER_PATH = "src\\main\\resources\\files\\";
+
 
 
     public FileUploadResponseDto uploadImageToFileSystem(MultipartFile file) throws IOException {

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Api(tags = "기념일")
 @RestController
-@RequestMapping(value = "api/v1/anvsy" , produces = "application/json; charset=utf8")
+@RequestMapping(value = "/api/v1/anvsy" , produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 public class AnvsyController {
 
