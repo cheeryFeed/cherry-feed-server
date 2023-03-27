@@ -14,17 +14,17 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 public class UserInfoResponseDto {
-    Long id;
-    String email;
-    String nickname;
-    Date birth;
-    Boolean isTerms;
-    String connectCode;
-    Long imgId;
-    String introduce;
-    String link;
-    Boolean isOpen;
-    String phone;
-    String gender;
-    Long coupleId;
+    private Long id;
+    private String email;
+    private String nickname;
+    private String birth;
+    private Boolean isTerms;
+    private String connectCode;
+    private Long imgId;
+    private String introduce;
+    private String link;
+    private Boolean isOpen;
+    private String phone;
+    private String gender;
+    private Long coupleId;
 }

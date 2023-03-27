@@ -26,7 +26,7 @@ public class User {
     private String pw;             //비밀번호 varchar(30)
     private String email;          //이메일 varchar(50)
     private String nickname;       //닉네임 varchar(16)
-    private Date birth;          //생년월일 date
+    private String birth;          //생년월일 date
     @CreationTimestamp
     private Date createdAt;      //생성일 varchar(16)
     @LastModifiedDate

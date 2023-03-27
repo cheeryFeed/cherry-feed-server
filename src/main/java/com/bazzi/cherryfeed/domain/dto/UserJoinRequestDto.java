@@ -23,7 +23,7 @@ public class UserJoinRequestDto {
     @ApiModelProperty
     private String email;          //이메일 varchar(50)
     private String nickname;       //닉네임 varchar(16)
-    private Date birth;       //생년월일 date
+    private String birth;       //생년월일 date
 
     private String social_provider;//social_provider varchar(16)
     private String socialId;      //social_id varchar(16)

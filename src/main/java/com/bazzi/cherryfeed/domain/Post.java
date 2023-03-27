@@ -21,6 +21,7 @@ public class Post {
     //private Long createdById;   //등록자아이디
     //private Long calId;         //일정고유ID
     private String postNm;      //게시물제목
+    @Lob
     private String postContent;
     private String location;    //장소
     @CreationTimestamp

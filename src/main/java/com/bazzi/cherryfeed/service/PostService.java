@@ -3,15 +3,22 @@ package com.bazzi.cherryfeed.service;
 import com.bazzi.cherryfeed.domain.CoupleCalendar;
 import com.bazzi.cherryfeed.domain.Post;
 import com.bazzi.cherryfeed.domain.User;
+import com.bazzi.cherryfeed.domain.dto.PageResponse;
 import com.bazzi.cherryfeed.domain.dto.PostRequestDto;
+import com.bazzi.cherryfeed.domain.dto.PostResponseDto;
 import com.bazzi.cherryfeed.repository.CoupleCalendarRepository;
 import com.bazzi.cherryfeed.repository.PostRepository;
 import com.bazzi.cherryfeed.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -54,5 +61,39 @@ public class PostService {
     public String deletePost(Long id ){
         postRepository.deleteById(id);
         return "SUCCES";
+    }
+    public PageResponse findAll(int pageNo, int pageSize){
+        PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "id"));//0페이지에서 3개 가져와
+        Page<Post> page = postRepository.findAll(pageRequest);
+
+        long totalElements = page.getTotalElements(); //토탈 카운트
+        int number = page.getNumber();
+
+        ArrayList<PostResponseDto> postResponseDtos = new ArrayList<>();
+
+        List<Post> content = page.getContent(); //3개 데이터들
+
+        for (Post post : content) {
+            PostResponseDto postResponseDto = PostResponseDto.builder()
+                    .postAt(post.getPostAt())
+                    .postContent(post.getPostContent())
+                    .postView(post.getPostView())
+                    .postNm(post.getPostNm())
+                    .scrap(post.getScrap())
+                    .id(post.getId())
+                    .location(post.getLocation())
+                    .imgId(post.getImgId())
+                    .build();
+            postResponseDtos.add(postResponseDto);
+        }
+        PageResponse pageResponse = PageResponse.builder()
+                .content(postResponseDtos)
+                .last(page.isLast())
+                .pageNo(pageNo)
+                .totalElements(totalElements)
+                .totalPages(page.getTotalPages())
+                .pageSize(pageSize)
+                .build();
+        return pageResponse;
     }
 }

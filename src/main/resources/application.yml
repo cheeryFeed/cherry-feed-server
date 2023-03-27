@@ -11,7 +11,7 @@ spring:
       driver-class-name: com.mysql.cj.jdbc.Driver
       url: jdbc:mysql://localhost:3306/cherry_feed
       username: root
-      password: '1234' #PC 1234 , 노트북 12341234
+      password: '12341234' #PC 1234 , 노트북 12341234
     jpa:
       open-in-view: true
       hibernate:
