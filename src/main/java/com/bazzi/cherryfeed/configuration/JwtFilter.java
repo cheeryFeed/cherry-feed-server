@@ -1,6 +1,6 @@
 package com.bazzi.cherryfeed.configuration;
 
-import com.bazzi.cherryfeed.service.UserService;
+import com.bazzi.cherryfeed.apps.account.service.UserService;
 import com.bazzi.cherryfeed.utils.JwtTokenUtil;
 import com.google.common.net.HttpHeaders;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,6 @@
 package com.bazzi.cherryfeed.configuration;
 
-import com.bazzi.cherryfeed.service.UserService;
+import com.bazzi.cherryfeed.apps.account.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

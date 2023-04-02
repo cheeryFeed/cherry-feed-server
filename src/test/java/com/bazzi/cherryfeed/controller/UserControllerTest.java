@@ -1,10 +1,10 @@
 package com.bazzi.cherryfeed.controller;
 
-import com.bazzi.cherryfeed.domain.dto.UserJoinRequestDto;
-import com.bazzi.cherryfeed.domain.dto.UserLoginRequestDto;
+import com.bazzi.cherryfeed.apps.account.dto.UserJoinRequestDto;
+import com.bazzi.cherryfeed.apps.account.dto.UserLoginRequestDto;
 import com.bazzi.cherryfeed.exception.AppException;
 import com.bazzi.cherryfeed.exception.ErrorCode;
-import com.bazzi.cherryfeed.service.UserService;
+import com.bazzi.cherryfeed.apps.account.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
