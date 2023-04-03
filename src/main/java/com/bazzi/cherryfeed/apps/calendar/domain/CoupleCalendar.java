@@ -1,7 +1,7 @@
 package com.bazzi.cherryfeed.apps.calendar.domain;
 
 import com.bazzi.cherryfeed.apps.couple.domain.Couple;
-import com.bazzi.cherryfeed.apps.account.domain.User;
+import com.bazzi.cherryfeed.apps.account.domain.Account;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -35,18 +35,18 @@ public class CoupleCalendar {
     private String content;     //내용(다이어리)
     private Date alarmAt;       //알림일자
     private int type;          //유형 - 계획1,일정2
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "couple_id")     //커플아이디 //2.이름을 name값으로 지정하며 FK로 만들어준다.
     private Couple coupleId;                      //1. 이 객체 테이블의 PK아이디를 가져와
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by_id") //등록아이디
-    private User createdById;
+    private Account createdById;
 
-    @OneToMany(mappedBy = "calendarId")
-    private List<CheckList> checkLists= new ArrayList<>(); //캘린더 하나에 들어있는 체크리스트들ㅋ
+    @OneToMany(mappedBy = "calendar")
+    private List<CheckList> checkLists= new ArrayList<>(); //캘린더 하나에 들어있는 체크리스트들
 
     public void updateCalendar(Long partiId1,Long partiId2,String title,Boolean isAllDay,Date startAt,Date endAt
-                               ,Long imgId,String location,String status,String content,Date alarmAt){
+                               ,Long imgId,String location,String status,String content,Date alarmAt,int type){
         this.partiId1=partiId1;
         this.partiId2=partiId2;
         this.title=title;
@@ -58,5 +58,6 @@ public class CoupleCalendar {
         this.status=status;
         this.content=content;
         this.alarmAt=alarmAt;
+        this.type=type;
     }
 }

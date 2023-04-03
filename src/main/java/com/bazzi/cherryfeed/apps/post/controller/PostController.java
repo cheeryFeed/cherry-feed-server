@@ -21,24 +21,20 @@ public class PostController {
     @ApiOperation(value = "게시물등록")
     @PostMapping("/post-post")
     public ResponseEntity<String> createAnvsy(Authentication authentication, @RequestBody PostRequestDto postRequestDto){
-        String userEmail = authentication.getName();//이메일
-        postService.createPost(userEmail, postRequestDto);
-        return ResponseEntity.ok().body("등록완료.");
+        //(고객아이디,dto)를 게시글등록 서비스에 보낸 후 응답메세지를 가져온다.
+        return ResponseEntity.ok().body(postService.createPost(Long.parseLong(authentication.getName()), postRequestDto));
     }
-    //@ApiOperation(value = "게시물조회")
-    //@GetMapping
-
     @ApiOperation(value = "게시물수정")
     @PutMapping("/post-post/{id}")
     public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto){
-        postService.updatePost(id,postRequestDto);
-        return ResponseEntity.ok().body("등록완료.");
+        //게시글 아이디와 dto를 게시글수정 서비스에 보낸 후 응답메세지를 가져온다.
+        return ResponseEntity.ok().body(postService.updatePost(id,postRequestDto));
     }
     @ApiOperation(value = "게시물삭제")
     @DeleteMapping("/post-post/{id}")
     public ResponseEntity<String> deletePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto){
-        postService.deletePost(id);
-        return ResponseEntity.ok().body("삭제완료.");
+        //게시글 아이디를 게시글삭제 서비스에 보낸 후 응답메세지를 가져온다.
+        return ResponseEntity.ok().body(postService.deletePost(id));
     }
     @ApiOperation(value = "게시물조회")
     @GetMapping
@@ -46,9 +42,8 @@ public class PostController {
             @RequestParam(value = "pageNo", defaultValue = "0" ,required = false) int pageNo,
             @RequestParam(value = "pageSize", defaultValue = "3" ,required = false) int pageSize
     ){
-        log.info("Read Paging All");
-        PageResponse pageResponse = postService.findAll(pageNo, pageSize);
-        return ResponseEntity.ok().body(pageResponse);
+        //페이지 넘버와,사이즈를 조회서비스에 보낸 후 페이징 처리가된 데이터를 가져온다.
+        return ResponseEntity.ok().body(postService.findAll(pageNo, pageSize));
     }
 
 }

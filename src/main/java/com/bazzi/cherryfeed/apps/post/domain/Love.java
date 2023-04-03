@@ -1,6 +1,6 @@
 package com.bazzi.cherryfeed.apps.post.domain;
 
-import com.bazzi.cherryfeed.apps.account.domain.User;
+import com.bazzi.cherryfeed.apps.account.domain.Account;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -23,7 +23,7 @@ public class Love {
     //private Long createdByNo;   //게시물번호
     @ManyToOne
     @JoinColumn(name = "created_by_id") //좋아요 누른 아이디
-            User createdById;
+    private Account createdById;
     @ManyToOne
     @JoinColumn(name = "created_by_no") //게시물번호
     private Post createdByNo;

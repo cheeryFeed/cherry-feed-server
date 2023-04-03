@@ -21,7 +21,7 @@ public class CheckList {
     private Boolean isFinish;    //체크유무 true,false
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calendar_id")  //일정고유ID
-    private CoupleCalendar calendarId;
+    private CoupleCalendar calendar;
     public void updateCheckList(String content,Boolean isFinish){
         this.content=content;
         this.isFinish=isFinish;

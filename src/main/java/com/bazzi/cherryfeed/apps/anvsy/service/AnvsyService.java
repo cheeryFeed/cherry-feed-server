@@ -2,11 +2,13 @@ package com.bazzi.cherryfeed.apps.anvsy.service;
 
 import com.bazzi.cherryfeed.apps.anvsy.domain.Anvsy;
 import com.bazzi.cherryfeed.apps.couple.domain.Couple;
-import com.bazzi.cherryfeed.apps.account.domain.User;
+import com.bazzi.cherryfeed.apps.account.domain.Account;
 import com.bazzi.cherryfeed.apps.anvsy.dto.AnvsyRequestDto;
 import com.bazzi.cherryfeed.apps.anvsy.dto.AnvsyResponseDto;
 import com.bazzi.cherryfeed.apps.anvsy.repository.AnvsyRepository;
-import com.bazzi.cherryfeed.apps.account.repository.UserRepository;
+import com.bazzi.cherryfeed.apps.account.repository.AccountRepository;
+import com.bazzi.cherryfeed.exception.AppException;
+import com.bazzi.cherryfeed.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,11 @@ import java.util.List;
 @RequiredArgsConstructor
 @Slf4j
 public class AnvsyService {
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
     private final AnvsyRepository anvsyRepository;
 
-    public String createAnvsy(String userEmail, AnvsyRequestDto anvsyRequestDto){
-        User fidedUser = userRepository.findUserByEmail(userEmail);   //user
+    public String createAnvsy(Long id, AnvsyRequestDto anvsyRequestDto){
+        Account fidedUser = accountRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));   //user
         Couple coupleId = fidedUser.getCouple();                      //couple_id(PK)
 
         Anvsy anvsy = Anvsy.builder()
@@ -35,7 +37,7 @@ public class AnvsyService {
                 .imgId(anvsyRequestDto.getImgId())
                 .build();
         anvsyRepository.save(anvsy);
-        return "SUCCES";
+        return "등록완료.";
     }
     //기념일 수정 서비스로직
     @Transactional
@@ -46,18 +48,18 @@ public class AnvsyService {
         Long imgId = anvsyRequestDto.getImgId();         //이미지아이디
         Date anvsyAt = anvsyRequestDto.getAnvsyAt();     //일정시간
 
-        Anvsy anvsy = anvsyRepository.findById(id).get();
+        Anvsy anvsy = anvsyRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
         anvsy.updateAnvsy(anvsyNm,imgId,status,anvsyAt);
-        return "SUCCES";
+        return "기념일 수정완료.";
     }
     @Transactional
     public String deleteAnvsy(Long id ){
         anvsyRepository.deleteById(id);
-        return "SUCCES";
+        return "기념일 삭제완료.";
     }
-    public List<AnvsyResponseDto> readAnvsy(String userEmail){
-        User fidedUser = userRepository.findUserByEmail(userEmail);     //user
-        Couple coupleId = fidedUser.getCouple();                        //couple_id(PK)
+    public List<AnvsyResponseDto> readAnvsy(Long id){
+        Account findedUser = accountRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));     //user
+        Couple coupleId = findedUser.getCouple();                        //couple_id(PK)
 
         List<Anvsy> anvsies = anvsyRepository.findByCoupleId(coupleId); // 조회한 일정들을 list에 담는다.
 

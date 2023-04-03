@@ -1,11 +1,11 @@
 package com.bazzi.cherryfeed.apps.couple.service;
 
 import com.bazzi.cherryfeed.apps.couple.domain.Couple;
-import com.bazzi.cherryfeed.apps.account.domain.User;
+import com.bazzi.cherryfeed.apps.account.domain.Account;
 import com.bazzi.cherryfeed.exception.AppException;
 import com.bazzi.cherryfeed.exception.ErrorCode;
 import com.bazzi.cherryfeed.apps.couple.repository.CoupleRepository;
-import com.bazzi.cherryfeed.apps.account.repository.UserRepository;
+import com.bazzi.cherryfeed.apps.account.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,46 +15,41 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Slf4j
 public class CoupleService {
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
     private final CoupleRepository coupleRepository;
 
     @Transactional
-    public String save (String email,String connectCode){
-        User requestUser = userRepository.findUserByEmail(email);
-        User receiveUser = userRepository.findUserByConnectCode(connectCode);
-        
-        if(receiveUser==null){
-            throw new AppException(ErrorCode.USERNAME_DUPLICATED,connectCode +"존재하지 않은 코드입니다");
-        }
+    public String createCouple (Long id,String connectCode){
+        // n+1문제 해결
+        Account requestUser = accountRepository.findByIdFetchCouple(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        Account receiveUser = accountRepository.findByConnectCodeFetchCouple(connectCode).orElseThrow(()->new AppException(ErrorCode.CONNECT_NOT_FOUND));
 
-        Couple couple1 = requestUser.getCouple();
-        Couple couple2 = receiveUser.getCouple();
-
-        String nickname1 = requestUser.getNickname();
-        String nickname2 = receiveUser.getNickname();
-
-        
-        //이 방식 말고 나중에 Optional로 수정해야함.
-        if(couple1!=null || couple2!=null){
-            throw new AppException(ErrorCode.USERNAME_DUPLICATED,receiveUser.getEmail() +"님 커플은 이미 존재합니다.");
-        }else{
+        if (requestUser.getCouple() != null || receiveUser.getCouple() != null) {
+            throw new AppException(ErrorCode.USERNAME_DUPLICATED, receiveUser.getEmail() + "님 커플은 이미 존재합니다.");
+        } else {
+            // todo MapStruct --> 이친구를 찾아서 도입하는것도 추천.
             Couple couple = Couple.builder()
-                    .coupleName(nickname1+"님과"+nickname2+"커플")
+                    .coupleName(requestUser.getNickname() + "님과" + receiveUser.getNickname() + "커플")
                     .stts(1)
                     .build();
             Couple createdCouple = coupleRepository.save(couple);
             requestUser.updateUserCoupleId(createdCouple);
             receiveUser.updateUserCoupleId(createdCouple);
-            //userRepository.save(requestUser);
-            //userRepository.save(receiveUser); //@Transactional 더티체킹방식으로 저장
         }
-        return receiveUser.getEmail();
+        return requestUser.getUserName() + "님과" + receiveUser.getUserName() + "님이 연결되었습니다. 커플테이블 저장완료";
     }
     @Transactional
-    public String deleteCouple(String email){
-        User user = userRepository.findByEmail(email).get();
-        Couple couple = coupleRepository.findById(user.getCouple().getId()).get();
-        couple.updateCoupleStts(9);
-        return "OK";
+    public void deleteCouple(Long id) {
+        //userRepository.findByIdFetchCouple(id).ifPresent(user-> user.getCouple().updateCoupleStts(9));
+        accountRepository.findByIdFetchCouple(id).ifPresentOrElse(
+                (user) -> {
+                    if (user.getCouple() != null) {
+                        user.getCouple().updateCoupleStts(9);
+                    }
+                },
+                () -> {
+                    throw new AppException(ErrorCode.USER_NOT_FOUND);
+                }
+        );
     }
 }

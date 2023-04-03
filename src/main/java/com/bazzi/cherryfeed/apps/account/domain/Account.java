@@ -1,5 +1,6 @@
 package com.bazzi.cherryfeed.apps.account.domain;
 
+import com.bazzi.cherryfeed.apps.common.BaseEntity;
 import com.bazzi.cherryfeed.apps.couple.domain.Couple;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,7 +18,7 @@ import java.util.Date;
 @NoArgsConstructor //public 또는 protected 의 기본 생성자가 필수이다. 기본 생성자를 꼭 넣어야 한다. //JPA기반 필수임 프록시 기술 쓸때 피룡함 나중에.
 @Builder //해당 클래스에 해당하는 엔티티 객체를 만들 때 빌더 패턴을 이용해서 만들 수 있도록 지정해주는 어노테이션이다.
 //@Table(name="user") 이렇게 하면 테이블 명을 따로 지정해준다. 없으면 클레스명으로 만들어진다.
-public class User {
+public class Account extends BaseEntity {
     @Id //PK라는걸 알려주는
     @GeneratedValue(strategy = GenerationType.IDENTITY) //DB에서 값을 증가시키는 전략 IDENTITY -MySQL auto increment
     private Long id; //유저 아이디
@@ -26,10 +27,6 @@ public class User {
     private String email;          //이메일 varchar(50)
     private String nickname;       //닉네임 varchar(16)
     private String birth;          //생년월일 date
-    @CreationTimestamp
-    private Date createdAt;      //생성일 varchar(16)
-    @LastModifiedDate
-    private Date modifyAt;       //수정일 varchar(16)
     private String socialProvider; //social_provider varchar(16)
     private String socialId;       //social_id varchar(16)
     private Boolean isTerms;        //이용약관(개인정보) boolean
@@ -68,7 +65,4 @@ public class User {
         this.phone=phone;
         this.nickname=nickname;
     }
-
-
-
 }

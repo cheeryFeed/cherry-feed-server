@@ -26,7 +26,7 @@ public class ReportUser {
     //private Long createdById;     //유저아이디
     @ManyToOne
     @JoinColumn(name = "post_no") //신고게시물번호
-            Post postNo;
+    private Post postNo;
     @ManyToOne
     @JoinColumn(name = "created_by_id") //신고한 유저아이디
     private CoupleCalendar createdById;

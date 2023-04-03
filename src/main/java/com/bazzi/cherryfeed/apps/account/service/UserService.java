@@ -1,14 +1,11 @@
 package com.bazzi.cherryfeed.apps.account.service;
 
-import com.bazzi.cherryfeed.apps.account.domain.User;
+import com.bazzi.cherryfeed.apps.account.domain.Account;
 import com.bazzi.cherryfeed.apps.account.domain.WithdrawalDetail;
-import com.bazzi.cherryfeed.apps.account.dto.UserInfoResponseDto;
-import com.bazzi.cherryfeed.apps.account.dto.UserJoinRequestDto;
-import com.bazzi.cherryfeed.apps.account.dto.UserRequestUpdateDto;
-import com.bazzi.cherryfeed.apps.account.dto.WithdrawalRequestDto;
+import com.bazzi.cherryfeed.apps.account.dto.*;
 import com.bazzi.cherryfeed.exception.AppException;
 import com.bazzi.cherryfeed.exception.ErrorCode;
-import com.bazzi.cherryfeed.apps.account.repository.UserRepository;
+import com.bazzi.cherryfeed.apps.account.repository.AccountRepository;
 import com.bazzi.cherryfeed.apps.account.repository.WithdrawalDetailRepository;
 import com.bazzi.cherryfeed.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
     private final WithdrawalDetailRepository withdrawalDetailRepository;
 
     private final BCryptPasswordEncoder encoder;
@@ -31,7 +28,7 @@ public class UserService {
     private String key;
     private Long expireTimeMs = 1000 * 60 * 60l; //1시간
 
-    public String join(UserJoinRequestDto userJoinRequestDto){
+    public String join(AccountDto.Create userJoinRequestDto){
         String email      = userJoinRequestDto.getEmail();    //로그인 이메일
         String password   = userJoinRequestDto.getPassword(); //비밀번호
         String userName   = userJoinRequestDto.getUserName(); //회원이름
@@ -44,12 +41,12 @@ public class UserService {
         Long imgId        = userJoinRequestDto.getImgId();
 
         // user name 중복 체크
-        userRepository.findByEmail(email)
+        accountRepository.findByEmail(email)
                 .ifPresent(user -> {
                     throw new AppException(ErrorCode.USERNAME_DUPLICATED,email +"는 이미 있습니다.");
                 });
         // 저장
-        User user = User.builder()
+        Account user = Account.builder()
                 .email(email)
                 .pw(encoder.encode(password)) //인코딩
                 .userName(userName)
@@ -63,13 +60,13 @@ public class UserService {
                 .status("1")
                 .build();
 
-        userRepository.save(user);
-        return "SUCCES";
+        accountRepository.save(user);
+        return "회원가입이 성공하였습니다.";
     }
 
     public String login(String email, String password){
         // userName없음
-        User selectedUser = userRepository.findByEmail(email)
+        Account selectedUser = accountRepository.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, email + " 이 없습니다."));
 
         // password틀림
@@ -78,16 +75,14 @@ public class UserService {
             throw new AppException(ErrorCode.INVALID_PASSWORD,"패스워드를 잘못 입력 헀습니다.");
         }
 
-        //맞았을경우
-        String token = JwtTokenUtil.createToken(selectedUser.getEmail() , key, expireTimeMs);
-        
+        // 맞았을경우
         // 앞에서 Exception안나면 토큰 발행
-        return token;
+        return JwtTokenUtil.createToken(selectedUser.getId() , key, expireTimeMs); //발행하는 토큰
     }
 
     @Transactional
-    public String withdrawal(String email, WithdrawalRequestDto withdrawalRequestDto){
-        User user = userRepository.findUserByEmail(email);
+    public String withdrawal(Long id, AccountDto.Delete withdrawalRequestDto){
+        Account user = accountRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
         WithdrawalDetail withdrawalDetail = WithdrawalDetail.builder()
                 .status(withdrawalRequestDto.getStatus())
                 .content(withdrawalRequestDto.getContent())
@@ -95,11 +90,11 @@ public class UserService {
                 .build();
         withdrawalDetailRepository.save(withdrawalDetail);
         user.updateUserWithdrawal(withdrawalDetail,"9");
-        return "SUCCES";
+        return "회원탈퇴 완료.";
     }
-    public UserInfoResponseDto readUser(String email){
-        User user = userRepository.findByEmail(email).get();
-        UserInfoResponseDto userInfoResponseDto=UserInfoResponseDto.builder()
+    public AccountDto.Response readUser(Long id){
+        Account user = accountRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        AccountDto.Response userInfoResponseDto=AccountDto.Response.builder()
                 .id(user.getId())
                 .isOpen(user.getIsOpen())
                 .introduce(user.getIntroduce())
@@ -117,18 +112,17 @@ public class UserService {
         return userInfoResponseDto;
     }
     @Transactional
-    public String userUpdate(String email, UserRequestUpdateDto userRequestUpdateDto){
-        User user = userRepository.findByEmail(email).get();
-
-        String introduce = userRequestUpdateDto.getIntroduce();
-        String link = userRequestUpdateDto.getLink();
-        Boolean isOpen = userRequestUpdateDto.getIsOpen();
-        Long imgId = userRequestUpdateDto.getImgId();
-        Boolean isTerms = userRequestUpdateDto.getIsTerms();
-        String phone = userRequestUpdateDto.getPhone();
-        String nickname = userRequestUpdateDto.getNickname();
-
-        user.updateUserInfo(introduce,link,isOpen,imgId,isTerms,phone,nickname);
-        return "SUCCES";
+    public String userUpdate(Long id, AccountDto.Update userRequestUpdateDto){
+        Account user = accountRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        user.updateUserInfo(
+                userRequestUpdateDto.getIntroduce(),
+                userRequestUpdateDto.getLink(),
+                userRequestUpdateDto.getIsOpen(),
+                userRequestUpdateDto.getImgId(),
+                userRequestUpdateDto.getIsTerms(),
+                userRequestUpdateDto.getPhone(),
+                userRequestUpdateDto.getNickname()
+        );
+        return "업데이트 완료.";
     }
 }

@@ -50,13 +50,14 @@ public class JwtFilter extends OncePerRequestFilter {
         // UserName Token에서 꺼내기
         String email    = JwtTokenUtil.getEmail(token, key);
         String userName = JwtTokenUtil.getUserName(token, key);
+        Long id = JwtTokenUtil.getId(token, key);
         log.info("email:{}",email);
         log.info("userName:{}",userName);
 
 
         // 권한 부여
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(email,null, List.of(new SimpleGrantedAuthority("USER"))); //DB에 role같은걸 지정해 놓았으면 거기에서 꺼내서 넣을 수있다.
+                new UsernamePasswordAuthenticationToken(id,null, List.of(new SimpleGrantedAuthority("USER"))); //DB에 role같은걸 지정해 놓았으면 거기에서 꺼내서 넣을 수있다.
         // Detail
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);

@@ -1,6 +1,7 @@
 package com.bazzi.cherryfeed.apps.post.dto;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +13,14 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PostRequestDto {
-    private String postNm;      //게시물제목
-    private String postContent; //게시물 내용
-    private String location;    //장소
-    private Long imgId;         //이미지아이디
-    private Long calendarId;    //캘린더 아이디
+    @ApiModelProperty(value = "게시물제목")
+    private String postNm;
+    @ApiModelProperty(value = "게시물 내용")
+    private String postContent;
+    @ApiModelProperty(value = "장소")
+    private String location;
+    @ApiModelProperty(value = "이미지 아이디")
+    private Long imgId;
+    @ApiModelProperty(value = "캘린더 아이디")
+    private Long calendarId;
 }

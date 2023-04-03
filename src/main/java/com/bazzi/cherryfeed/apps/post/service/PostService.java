@@ -2,13 +2,15 @@ package com.bazzi.cherryfeed.apps.post.service;
 
 import com.bazzi.cherryfeed.apps.calendar.domain.CoupleCalendar;
 import com.bazzi.cherryfeed.apps.post.domain.Post;
-import com.bazzi.cherryfeed.apps.account.domain.User;
+import com.bazzi.cherryfeed.apps.account.domain.Account;
 import com.bazzi.cherryfeed.apps.post.dto.PageResponse;
 import com.bazzi.cherryfeed.apps.post.dto.PostRequestDto;
 import com.bazzi.cherryfeed.apps.post.dto.PostResponseDto;
 import com.bazzi.cherryfeed.apps.calendar.repository.CoupleCalendarRepository;
 import com.bazzi.cherryfeed.apps.post.repository.PostRepository;
-import com.bazzi.cherryfeed.apps.account.repository.UserRepository;
+import com.bazzi.cherryfeed.apps.account.repository.AccountRepository;
+import com.bazzi.cherryfeed.exception.AppException;
+import com.bazzi.cherryfeed.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,12 +27,12 @@ import java.util.List;
 @Slf4j
 public class PostService {
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
+    private final AccountRepository accountRepository;
     private final CoupleCalendarRepository coupleCalendarRepository;
 
-    public String createPost(String userEmail, PostRequestDto postRequestDto){
-        User fidedUser = userRepository.findUserByEmail(userEmail); //유저
-        CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(postRequestDto.getCalendarId()).get();
+    public String createPost(Long id, PostRequestDto postRequestDto){
+        Account fidedUser = accountRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND)); //유저
+        CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(postRequestDto.getCalendarId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
 
         Post post = Post.builder()
                 .postNm(postRequestDto.getPostNm())
@@ -41,7 +43,7 @@ public class PostService {
                 .calId(coupleCalendar)
                 .build();
         postRepository.save(post);
-        return "SUCCES";
+        return "게시글 등록완료.";
     }
     @Transactional
     public String updatePost(Long id,PostRequestDto postRequestDto){
@@ -51,15 +53,15 @@ public class PostService {
         String postContent = postRequestDto.getPostContent();
         Long imgId = postRequestDto.getImgId();
 
-        CoupleCalendar coupleCalendarId = coupleCalendarRepository.findById(calendarId).get();
-        Post post = postRepository.findById(id).get();
+        CoupleCalendar coupleCalendarId = coupleCalendarRepository.findById(calendarId).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+        Post post = postRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
         post.updatePost(coupleCalendarId,postNm,postContent,location,imgId);
-        return "SUCCES";
+        return "게시글 수정 완료.";
     }
     @Transactional
     public String deletePost(Long id ){
         postRepository.deleteById(id);
-        return "SUCCES";
+        return "게시글 삭제완료.";
     }
     public PageResponse findAll(int pageNo, int pageSize){
         PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "id"));//0페이지에서 3개 가져와
@@ -74,7 +76,7 @@ public class PostService {
 
         for (Post post : content) {
             PostResponseDto postResponseDto = PostResponseDto.builder()
-                    .postAt(post.getPostAt())
+                    .postAt(post.getCreatedAt())
                     .postContent(post.getPostContent())
                     .postView(post.getPostView())
                     .postNm(post.getPostNm())

@@ -22,14 +22,14 @@ import java.io.IOException;
 public class FileController {
     private final StorageService storageService;
     @ApiOperation(value = "파일업로드")
-    @PostMapping("/fileSystem")
+    @PostMapping("/file-system")
     public ResponseEntity<?> uploadImageToFileSystem(@RequestParam("image") MultipartFile file) throws IOException {
         FileUploadResponseDto dto = storageService.uploadImageToFileSystem(file);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(dto);
     }
     @ApiOperation(value = "파일다운로드")
-    @GetMapping("/fileSystem/{fileName}")
+    @GetMapping("/file-system/{fileName}")
     public ResponseEntity<?> downloadImageToFileSystem(@PathVariable("fileName") String fileName) throws IOException {
         byte[] downloadImage = storageService.downloadImageFromFileSystem(fileName);
         return ResponseEntity.status(HttpStatus.OK)
