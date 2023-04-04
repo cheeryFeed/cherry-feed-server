@@ -8,27 +8,28 @@ import java.util.Date;
 
 public class JwtTokenUtil {
 
-    public static String getUserName(String token, String key){ //토큰에서 값 꺼내기
+    public static String getUserName(String token, String key) { //토큰에서 값 꺼내기
         return Jwts.parser().setSigningKey(key).parseClaimsJws(token)
                 .getBody().get("userName", String.class);
     }
 
-    public static String getEmail(String token, String key){ //토큰에서 값 꺼내기
+    public static String getEmail(String token, String key) { //토큰에서 값 꺼내기
         return Jwts.parser().setSigningKey(key).parseClaimsJws(token)
                 .getBody().get("email", String.class);
     }
 
-    public static Long getId(String token, String key){ //토큰에서 값 꺼내기
+    public static Long getId(String token, String key) { //토큰에서 값 꺼내기
         return Jwts.parser().setSigningKey(key).parseClaimsJws(token)
                 .getBody().get("id", Long.class);
     }
 
 
-    public static boolean isExpired(String token, String key){
+    public static boolean isExpired(String token, String key) {
         return Jwts.parser().setSigningKey(key).parseClaimsJws(token)
                 .getBody().getExpiration().before(new Date());
     }
-    public static String createToken(Long id , String key , long expireTimeMs) { //expireTime을 받을것임.
+
+    public static String createToken(Long id, String key, long expireTimeMs) { //expireTime을 받을것임.
         Claims claims = Jwts.claims(); //map이랑 비슷
         claims.put("id", id); //토큰을 열면 email이 들어가있을것임
 

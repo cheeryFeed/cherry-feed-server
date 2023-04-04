@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CheckListRepository extends JpaRepository<CheckList,Long> {
+public interface CheckListRepository extends JpaRepository<CheckList, Long> {
     List<CheckList> findByCalendarId(CoupleCalendar calendar);
 }

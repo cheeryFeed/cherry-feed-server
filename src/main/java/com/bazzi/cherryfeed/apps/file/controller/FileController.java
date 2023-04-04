@@ -16,11 +16,12 @@ import java.io.IOException;
 
 @Api(tags = "파일업로드다운로드")
 @RestController
-@RequestMapping(value = "/api/v1/file" , produces = "application/json; charset=utf8")
+@RequestMapping(value = "/api/v1/file", produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
 
 public class FileController {
     private final StorageService storageService;
+
     @ApiOperation(value = "파일업로드")
     @PostMapping("/file-system")
     public ResponseEntity<?> uploadImageToFileSystem(@RequestParam("image") MultipartFile file) throws IOException {
@@ -28,6 +29,7 @@ public class FileController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(dto);
     }
+
     @ApiOperation(value = "파일다운로드")
     @GetMapping("/file-system/{fileName}")
     public ResponseEntity<?> downloadImageToFileSystem(@PathVariable("fileName") String fileName) throws IOException {

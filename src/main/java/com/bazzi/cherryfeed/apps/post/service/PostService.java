@@ -30,9 +30,9 @@ public class PostService {
     private final AccountRepository accountRepository;
     private final CoupleCalendarRepository coupleCalendarRepository;
 
-    public String createPost(Long id, PostRequestDto postRequestDto){
-        Account fidedUser = accountRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND)); //유저
-        CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(postRequestDto.getCalendarId()).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
+    public String createPost(Long id, PostRequestDto postRequestDto) {
+        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)); //유저
+        CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(postRequestDto.getCalendarId()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
 
         Post post = Post.builder()
                 .postNm(postRequestDto.getPostNm())
@@ -45,35 +45,35 @@ public class PostService {
         postRepository.save(post);
         return "게시글 등록완료.";
     }
-    @Transactional
-    public String updatePost(Long id,PostRequestDto postRequestDto){
-        Long calendarId = postRequestDto.getCalendarId();
-        String postNm = postRequestDto.getPostNm();
-        String location = postRequestDto.getLocation();
-        String postContent = postRequestDto.getPostContent();
-        Long imgId = postRequestDto.getImgId();
 
-        CoupleCalendar coupleCalendarId = coupleCalendarRepository.findById(calendarId).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
-        Post post = postRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
-        post.updatePost(coupleCalendarId,postNm,postContent,location,imgId);
+    @Transactional
+    public String updatePost(Long id, PostRequestDto postRequestDto) {
+        Long calendarId = postRequestDto.getCalendarId();
+        CoupleCalendar coupleCalendarId = coupleCalendarRepository.findById(calendarId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Post post = postRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        post.updatePost(
+                coupleCalendarId,
+                postRequestDto.getPostNm(),
+                postRequestDto.getPostContent(),
+                postRequestDto.getLocation(),
+                postRequestDto.getImgId()
+        );
         return "게시글 수정 완료.";
     }
+
     @Transactional
-    public String deletePost(Long id ){
+    public String deletePost(Long id) {
         postRepository.deleteById(id);
         return "게시글 삭제완료.";
     }
-    public PageResponse findAll(int pageNo, int pageSize){
+
+    public PageResponse findAll(int pageNo, int pageSize) {
         PageRequest pageRequest = PageRequest.of(pageNo, pageSize, Sort.by(Sort.Direction.DESC, "id"));//0페이지에서 3개 가져와
         Page<Post> page = postRepository.findAll(pageRequest);
 
         long totalElements = page.getTotalElements(); //토탈 카운트
-        int number = page.getNumber();
-
         ArrayList<PostResponseDto> postResponseDtos = new ArrayList<>();
-
         List<Post> content = page.getContent(); //3개 데이터들
-
         for (Post post : content) {
             PostResponseDto postResponseDto = PostResponseDto.builder()
                     .postAt(post.getCreatedAt())
@@ -87,7 +87,8 @@ public class PostService {
                     .build();
             postResponseDtos.add(postResponseDto);
         }
-        PageResponse pageResponse = PageResponse.builder()
+
+        return PageResponse.builder()
                 .content(postResponseDtos)
                 .last(page.isLast())
                 .pageNo(pageNo)
@@ -95,6 +96,5 @@ public class PostService {
                 .totalPages(page.getTotalPages())
                 .pageSize(pageSize)
                 .build();
-        return pageResponse;
     }
 }

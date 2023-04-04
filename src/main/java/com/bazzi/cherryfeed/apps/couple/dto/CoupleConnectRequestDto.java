@@ -13,5 +13,4 @@ import lombok.NoArgsConstructor;
 public class CoupleConnectRequestDto {
     @ApiModelProperty("연결시 사용하는 코드")
     private String connectCode;
-
 }

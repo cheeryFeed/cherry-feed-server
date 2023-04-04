@@ -1,7 +1,5 @@
 package com.bazzi.cherryfeed.apps.couple.controller;
 
-
-import com.bazzi.cherryfeed.apps.couple.dto.CoupleConnectRequestDto;
 import com.bazzi.cherryfeed.apps.couple.service.CoupleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,12 +18,12 @@ public class CoupleController { //토큰이 발급된 대상만 이용가능한 
     @ApiOperation(value = "커플연결등록")
     @PostMapping
     public ResponseEntity<String> connecting(Authentication authentication, String connectCode) {
-        //todo 아래 2L -> 토큰에서 꺼내온 ID 값을 넣는걸로 변경
         return ResponseEntity.ok().body(coupleService.createCouple(Long.parseLong(authentication.getName()), connectCode));
     }
+
     @ApiOperation(value = "커플 해지")
     @DeleteMapping
-    public ResponseEntity<String> deleteConnecting(Authentication authentication){
+    public ResponseEntity<String> deleteConnecting(Authentication authentication) {
         coupleService.deleteCouple(Long.parseLong(authentication.getName())); //고객아이디
         return ResponseEntity.ok().body("상태9변경완료.");
     }

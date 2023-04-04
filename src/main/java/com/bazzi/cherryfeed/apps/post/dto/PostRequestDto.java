@@ -6,8 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @ApiModel(value = "게시물등록요청모델")
 @Getter
 @AllArgsConstructor

@@ -17,10 +17,7 @@ import java.nio.file.Files;
 @Slf4j
 public class StorageService {
     private final FileDataRepository fileDataRepository;
-    private final String FOLDER_PATH = "C:\\cherry-feed-server\\src\\main\\resources\\files\\";
-    //private final String FOLDER_PATH = "src\\main\\resources\\files\\";
-
-
+    private static final String FOLDER_PATH = "C:\\cherry-feed-server\\src\\main\\resources\\files\\";
 
     public FileUploadResponseDto uploadImageToFileSystem(MultipartFile file) throws IOException {
         log.info("upload file: {}", file.getOriginalFilename());

@@ -19,8 +19,6 @@ public class Love {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;            //좋아요 테이블 아이디
     private Date createAt;      //좋아요 누른 일자
-    //private Long createdById;   //좋아요 누른 아이디
-    //private Long createdByNo;   //게시물번호
     @ManyToOne
     @JoinColumn(name = "created_by_id") //좋아요 누른 아이디
     private Account createdById;

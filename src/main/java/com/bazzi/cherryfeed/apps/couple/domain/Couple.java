@@ -6,11 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -28,11 +26,9 @@ public class Couple extends BaseEntity {
     //자신이 Member의 team에 매핑되어 있으므로 team으로 설정해준 것 입니다.
     //연관관계의 주인을 설정할 때 주인을 따로 설정하는 것이 아니고 자신이 이 연관관계의 주인이 아님을 설정해줘야 합니다.
     @OneToMany(mappedBy = "couple")  //FK가 없는쪽에 mappedBy를 써주는것이 좋다.
-    private List<Account> users= new ArrayList<>();
-    //@OneToMany(mappedBy = "couple")
-    //private List<Anvsy> anvsies= new ArrayList<>();
+    private List<Account> users = new ArrayList<>();
 
-    public void updateCoupleStts(int stts){
+    public void updateCoupleStts(int stts) {
         this.stts = stts;
     }
 

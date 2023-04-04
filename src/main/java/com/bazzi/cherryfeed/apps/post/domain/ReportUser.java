@@ -1,7 +1,6 @@
 package com.bazzi.cherryfeed.apps.post.domain;
 
 import com.bazzi.cherryfeed.apps.calendar.domain.CoupleCalendar;
-import com.bazzi.cherryfeed.apps.post.domain.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,8 +21,6 @@ public class ReportUser {
     private int dctStts;         //신고유형
     private String dctContent;    //내용
     private Date dctDt;           //신고일자
-    //private Long postNo;         //신고게시물번호
-    //private Long createdById;     //유저아이디
     @ManyToOne
     @JoinColumn(name = "post_no") //신고게시물번호
     private Post postNo;

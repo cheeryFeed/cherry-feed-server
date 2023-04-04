@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
+
 @ApiModel(value = "기념일등록응답모델")
 @Getter
 @AllArgsConstructor

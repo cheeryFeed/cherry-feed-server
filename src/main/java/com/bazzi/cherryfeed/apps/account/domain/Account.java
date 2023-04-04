@@ -6,11 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity //JPA에서 관리할때 JPA가 사용하는 객체를 의미할때
 @AllArgsConstructor
@@ -48,21 +45,22 @@ public class Account extends BaseEntity {
     @JoinColumn(name = "couple_id")
     private Couple couple; //couple_id
 
-    public void updateUserCoupleId(Couple id){
+    public void updateUserCoupleId(Couple id) {
         couple = id;
     }
-    public void updateUserWithdrawal(WithdrawalDetail withdrawalDetailId,String status){
+
+    public void updateUserWithdrawal(WithdrawalDetail withdrawalDetailId, String status) {
         this.withdrawalDetailId = withdrawalDetailId;
         this.status = status;
     }
 
-    public void updateUserInfo(String introduce,String link,Boolean isOpen,Long imgId,Boolean isTerms,String phone,String nickname){
-        this.introduce=introduce;
-        this.link=link;
-        this.isOpen=isOpen;
-        this.imgId=imgId;
-        this.isTerms=isTerms;
-        this.phone=phone;
-        this.nickname=nickname;
+    public void updateUserInfo(String introduce, String link, Boolean isOpen, Long imgId, Boolean isTerms, String phone, String nickname) {
+        this.introduce = introduce;
+        this.link = link;
+        this.isOpen = isOpen;
+        this.imgId = imgId;
+        this.isTerms = isTerms;
+        this.phone = phone;
+        this.nickname = nickname;
     }
 }

@@ -1,6 +1,5 @@
 package com.bazzi.cherryfeed.apps.post.dto;
 
-import com.bazzi.cherryfeed.apps.post.dto.PostResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

@@ -9,16 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Getter
 
 public enum ErrorCode {
-
-
-    USERNAME_DUPLICATED(HttpStatus.CONFLICT,""),
-    USERNAME_NOT_FOUND(HttpStatus.NOT_FOUND,""),
-    CONNECT_NOT_FOUND(HttpStatus.NOT_FOUND,""),
-    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED,""),
-    USER_NOT_FOUND(HttpStatus.UNAUTHORIZED,"");
+    USERNAME_DUPLICATED(HttpStatus.CONFLICT, ""),
+    USERNAME_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
+    CONNECT_NOT_FOUND(HttpStatus.NOT_FOUND, ""),
+    INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, ""),
+    USER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "");
 
     private HttpStatus httpStatus;
     private String message;
-
-
 }

@@ -14,9 +14,9 @@ import springfox.documentation.swagger.web.UiConfiguration;
 import springfox.documentation.swagger.web.UiConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-@Configuration	// 스프링 실행시 설정파일 읽어드리기 위한 어노테이션
-@EnableSwagger2	// Swagger2를 사용하겠다는 어노테이션
-@SuppressWarnings("unchecked")	// warning밑줄 제거를 위한 태그
+@Configuration    // 스프링 실행시 설정파일 읽어드리기 위한 어노테이션
+@EnableSwagger2    // Swagger2를 사용하겠다는 어노테이션
+@SuppressWarnings("unchecked")    // warning밑줄 제거를 위한 태그
 public class SwaggerConfig extends WebMvcConfigurationSupport {
 
     //리소스 핸들러 설정
@@ -34,6 +34,7 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         return getDocket("회원가입/로그인", Predicates.or(
                 PathSelectors.regex("/api/v1/users.*")));
     }
+
     @Bean
     public Docket coupleApi() {
         return getDocket("커플", Predicates.or(
@@ -54,11 +55,13 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
                 PathSelectors.regex("/api/v1/anvsy.*")));
 
     }
+
     @Bean
     public Docket postApi() {
         return getDocket("게시물", Predicates.or(
                 PathSelectors.regex("/api/v1/post.*")));
     }
+
     @Bean
     public Docket fileApi() {
         return getDocket("파일업로드다운로드", Predicates.or(

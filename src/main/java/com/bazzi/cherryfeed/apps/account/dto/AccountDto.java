@@ -8,6 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 public class AccountDto {
+
+    private AccountDto() {
+        throw new IllegalStateException("AccountDto");
+    }
+
     @ApiModel(value = "회원가입 모델")
     @AllArgsConstructor
     @NoArgsConstructor
@@ -23,26 +28,18 @@ public class AccountDto {
         private String nickname;       //닉네임 varchar(16)
         @ApiModelProperty(value = "생일 - 8자 문자타입", required = true)
         private String birth;       //생년월일 date
-
-        private String social_provider;//social_provider varchar(16)
-        private String socialId;      //social_id varchar(16)
-        private Boolean isTerms;     //이용약관(개인정보) Boolean
+        private String socialProvider;
+        private String socialId;
+        private Boolean isTerms;
         @ApiModelProperty("휴대폰번호")
-        private String phone;          //휴대폰번호 varchar(20)
+        private String phone;
         @ApiModelProperty("성별 - M,F")
-        private String gender;         //성별 varchar(1)
+        private String gender;
         @ApiModelProperty(value = "연결코드", required = true)
-        private String connect_code;     //고유연결코드 varchar(16)
+        private String connectCode;
         private Long imgId;
-        //private String profile_img;    //프로필사진 varchar(16)
-        //private String introduce;      //소개글 varchar(16)
-        //private String link;           //링크 varchar(16)
-        //private String acct_yn;        //계정 비공개 여부 varchar(1)
-        //private String stts;           //상태 varchar(16)
-        //private String tmnt_dt;        //해지일 varchar(16)
-        //private String create_dt;      //생성일 varchar(16)
-        //private String modify_dt;      //수정일 varchar(16)
     }
+
     @ApiModel(value = "유저조회응답모델")
     @Getter
     @AllArgsConstructor
@@ -76,6 +73,7 @@ public class AccountDto {
         @ApiModelProperty(value = "커플아이디")
         private Long coupleId;
     }
+
     @ApiModel(value = "유저업데이트요청모델")
     @Getter
     @AllArgsConstructor
@@ -97,15 +95,16 @@ public class AccountDto {
         @ApiModelProperty(value = "휴대폰번호")
         private String phone;
     }
+
     @ApiModel(value = "회원탈퇴모델")
     @AllArgsConstructor
     @NoArgsConstructor
     @Getter
     public static class Delete {
         @ApiModelProperty(value = "탈퇴사유")
-        private Long status;   
+        private Long status;
         @ApiModelProperty(value = "내용")
-        private String content; 
+        private String content;
     }
 
     @ApiModel(value = "로그인모델")

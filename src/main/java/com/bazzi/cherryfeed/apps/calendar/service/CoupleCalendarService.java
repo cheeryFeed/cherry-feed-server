@@ -29,8 +29,8 @@ public class CoupleCalendarService {
     private final CoupleCalendarRepository coupleCalendarRepository;
     private final CheckListRepository checkListRepository;
 
-    public String createCalendar(Long id, CalendarRequestDto.Create calendarRequestDto){
-        Account findedUser = accountRepository.findById(id).get();
+    public String createCalendar(Long id, CalendarRequestDto.Create calendarRequestDto) {
+        Account findedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         Couple couple = findedUser.getCouple();
         //캘린더 저장
         CoupleCalendar coupleCalendar = CoupleCalendar.builder()
@@ -63,8 +63,9 @@ public class CoupleCalendarService {
         }
         return "캘린더 등록완료.";
     }
-    public List<CalendarRequestDto.Response> readCalendar(Long id){
-        Account fidedUser = accountRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));     //user
+
+    public List<CalendarRequestDto.Response> readCalendar(Long id) {
+        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));     //user
         Couple coupleId = fidedUser.getCouple();                        //couple_id(PK)
 
         List<CoupleCalendar> calendars = coupleCalendarRepository.findByCoupleId(coupleId);// 조회한 일정들을 list에 담는다.
@@ -85,7 +86,7 @@ public class CoupleCalendarService {
             }
 
 
-            CalendarRequestDto.Response dto= CalendarRequestDto.Response.builder() //생성한 DTO리스트에 조회한 일정들을 담는다.
+            CalendarRequestDto.Response dto = CalendarRequestDto.Response.builder() //생성한 DTO리스트에 조회한 일정들을 담는다.
                     .id(calendar.getId())
                     .title(calendar.getTitle())
                     .isAllDay(calendar.getIsAllDay())
@@ -103,36 +104,25 @@ public class CoupleCalendarService {
         }
         return calendarResponseDtoList; //조회한 일정을 담은 응답 DTO를 반환한다.
     }
+
     @Transactional
     public String updateCalendar(Long id, CalendarRequestDto.Update calendarUpdateRequestDto) {
-        CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
-        coupleCalendar.updateCalendar(
-                calendarUpdateRequestDto.getPartiId1(),//참여자아이디1
-                calendarUpdateRequestDto.getPartiId2(),//참여자아이디2
-                calendarUpdateRequestDto.getTitle(),   //캘린더 이름
-                calendarUpdateRequestDto.getIsAllDay(),//종일여부
-                calendarUpdateRequestDto.getStartAt(), //시작시간
-                calendarUpdateRequestDto.getEndAt(),   //종료시간
-                calendarUpdateRequestDto.getImgId(),   //캘린더 이미지 아이디
-                calendarUpdateRequestDto.getLocation(),//캘린더 위치
-                calendarUpdateRequestDto.getStatus(),  //일정 상태
-                calendarUpdateRequestDto.getContent(), //캘린더 내용
-                calendarUpdateRequestDto.getAlarmAt(), //알림시간
-                calendarUpdateRequestDto.getType()     //캘린더 타입 1목표,2일정
-        );
+        CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        coupleCalendar.updateCalendar(calendarUpdateRequestDto);
 
         List<CheckListRequestDto.Update> checkList = calendarUpdateRequestDto.getCheckList();//체크리스트
         for (CheckListRequestDto.Update checkListUpdateRequestDto : checkList) {
             Long checkid = checkListUpdateRequestDto.getId();
             String checkContent = checkListUpdateRequestDto.getContent();
             Boolean isFinish = checkListUpdateRequestDto.getIsFinish();
-            CheckList findedCheckList = checkListRepository.findById(checkid).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
-            findedCheckList.updateCheckList(checkContent,isFinish);
+            CheckList findedCheckList = checkListRepository.findById(checkid).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+            findedCheckList.updateCheckList(checkContent, isFinish);
         }
         return "캘린더 수정완료.";
     }
+
     @Transactional
-    public String deleteCalendar(Long id){
+    public String deleteCalendar(Long id) {
         coupleCalendarRepository.deleteById(id);
         return "캘린더 삭제완료.";
     }

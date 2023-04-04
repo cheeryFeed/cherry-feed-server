@@ -27,10 +27,10 @@ public class Anvsy extends BaseEntity {
     @JoinColumn(name = "couple_id") //커플아이디
     private Couple coupleId;
 
-    public void updateAnvsy(String anvsyNm,Long imgId,int status,Date anvsyAt){
+    public void updateAnvsy(String anvsyNm, Long imgId, int status, Date anvsyAt) {
         this.anvsyNm = anvsyNm;
         this.imgId = imgId;
-        this.status=status;
-        this.anvsyAt=anvsyAt;
+        this.status = status;
+        this.anvsyAt = anvsyAt;
     }
 }

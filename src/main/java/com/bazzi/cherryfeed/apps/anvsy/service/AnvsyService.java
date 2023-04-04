@@ -25,8 +25,8 @@ public class AnvsyService {
     private final AccountRepository accountRepository;
     private final AnvsyRepository anvsyRepository;
 
-    public String createAnvsy(Long id, AnvsyRequestDto anvsyRequestDto){
-        Account fidedUser = accountRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));   //user
+    public String createAnvsy(Long id, AnvsyRequestDto anvsyRequestDto) {
+        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));   //user
         Couple coupleId = fidedUser.getCouple();                      //couple_id(PK)
 
         Anvsy anvsy = Anvsy.builder()
@@ -39,26 +39,29 @@ public class AnvsyService {
         anvsyRepository.save(anvsy);
         return "등록완료.";
     }
+
     //기념일 수정 서비스로직
     @Transactional
-    public String updateAnvsy(Long id ,AnvsyRequestDto anvsyRequestDto){
+    public String updateAnvsy(Long id, AnvsyRequestDto anvsyRequestDto) {
 
         String anvsyNm = anvsyRequestDto.getAnvsyNm();   //일정이름
         int status = anvsyRequestDto.getStatus();        //일정상태
         Long imgId = anvsyRequestDto.getImgId();         //이미지아이디
         Date anvsyAt = anvsyRequestDto.getAnvsyAt();     //일정시간
 
-        Anvsy anvsy = anvsyRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));
-        anvsy.updateAnvsy(anvsyNm,imgId,status,anvsyAt);
+        Anvsy anvsy = anvsyRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        anvsy.updateAnvsy(anvsyNm, imgId, status, anvsyAt);
         return "기념일 수정완료.";
     }
+
     @Transactional
-    public String deleteAnvsy(Long id ){
+    public String deleteAnvsy(Long id) {
         anvsyRepository.deleteById(id);
         return "기념일 삭제완료.";
     }
-    public List<AnvsyResponseDto> readAnvsy(Long id){
-        Account findedUser = accountRepository.findById(id).orElseThrow(()->new AppException(ErrorCode.USER_NOT_FOUND));     //user
+
+    public List<AnvsyResponseDto> readAnvsy(Long id) {
+        Account findedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));//user
         Couple coupleId = findedUser.getCouple();                        //couple_id(PK)
 
         List<Anvsy> anvsies = anvsyRepository.findByCoupleId(coupleId); // 조회한 일정들을 list에 담는다.
@@ -66,7 +69,7 @@ public class AnvsyService {
         List<AnvsyResponseDto> anvsyResponseDtoList = new ArrayList<>();// 응답DTO를 담을 리스트를 생성한다.
 
         for (Anvsy anvsy : anvsies) {
-            AnvsyResponseDto dto= AnvsyResponseDto.builder() //생성한 DTO리스트에 조회한 일정들을 담는다.
+            AnvsyResponseDto dto = AnvsyResponseDto.builder()           //생성한 DTO리스트에 조회한 일정들을 담는다.
                     .id(anvsy.getId())
                     .anvsyNm(anvsy.getAnvsyNm())
                     .anvsyAt(anvsy.getAnvsyAt())

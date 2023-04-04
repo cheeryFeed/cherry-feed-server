@@ -11,15 +11,19 @@ import java.util.Date;
 import java.util.List;
 
 public class CalendarRequestDto {
+    private CalendarRequestDto() {
+        throw new IllegalStateException("CalendarRequestDto");
+    }
+
     @ApiModel(value = "캘린더등록모델")
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Create{
+    public static class Create {
         @ApiModelProperty(value = "참여자아이디1")
-        private Long PartiId1;      //참여자아이디1
+        private Long partiId1;      //참여자아이디1
         @ApiModelProperty(value = "참여자아이디2")
-        private Long PartiId2;      //참여자아이디2
+        private Long partiId2;      //참여자아이디2
         @ApiModelProperty(value = "캘린더 제목")
         private String title;       //제목
         @ApiModelProperty(value = "종일 여부")
@@ -43,12 +47,13 @@ public class CalendarRequestDto {
         @ApiModelProperty(value = "체크리스트")
         private List<CheckListRequestDto.Create> checkList;
     }
+
     @ApiModel(value = "캘린더조회응답모델")
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
     @Builder
-    public static class Response{
+    public static class Response {
         @ApiModelProperty(value = "일정 아이디")
         private Long id;
         @ApiModelProperty(value = "제목")
@@ -74,15 +79,16 @@ public class CalendarRequestDto {
         @ApiModelProperty(value = "체크리스트")
         private List<CheckListRequestDto.Response> checkList;
     }
+
     @ApiModel(value = "캘린더등록모델")
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Update{
+    public static class Update {
         @ApiModelProperty(value = "참여자아이디1")
-        private Long PartiId1;
+        private Long partiId1;
         @ApiModelProperty(value = "참여자아이디2")
-        private Long PartiId2;
+        private Long partiId2;
         @ApiModelProperty(value = "제목")
         private String title;
         @ApiModelProperty(value = "종일")
@@ -90,7 +96,7 @@ public class CalendarRequestDto {
         @ApiModelProperty(value = "시작일자")
         private Date startAt;
         @ApiModelProperty(value = "종료일자")
-        private Date EndAt;
+        private Date endAt;
         @ApiModelProperty(value = "이미지아이디")
         private Long imgId;
         @ApiModelProperty(value = "장소")

@@ -7,11 +7,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-import java.util.List;
-
-
 public class CheckListRequestDto {
+    private CheckListRequestDto() {
+        throw new IllegalStateException("CheckListRequestDto");
+    }
+
     @ApiModel(value = "체크리스트등록모델")
     @Getter
     @AllArgsConstructor
@@ -22,6 +22,7 @@ public class CheckListRequestDto {
         @ApiModelProperty(value = "체크유무 true,false")
         private boolean isFinish;
     }
+
     @ApiModel(value = "체크리스트응답모델")
     @Getter
     @AllArgsConstructor
@@ -36,6 +37,7 @@ public class CheckListRequestDto {
         private Boolean isFinish;
 
     }
+
     @ApiModel(value = "체크리스트수정요청모델")
     @Getter
     @AllArgsConstructor
