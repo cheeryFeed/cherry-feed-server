@@ -1,6 +1,6 @@
 package com.bazzi.cherryfeed.configuration;
 
-import com.bazzi.cherryfeed.service.UserService;
+import com.bazzi.cherryfeed.apps.account.service.UserService;
 import com.bazzi.cherryfeed.utils.JwtTokenUtil;
 import com.google.common.net.HttpHeaders;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +31,9 @@ public class JwtFilter extends OncePerRequestFilter {
         log.info("authorization : {}", authorization);
 
         // token안보내면 Block
-        if(authorization == null || !authorization.startsWith("Bearer ")){
+        if (authorization == null || !authorization.startsWith("Bearer ")) {
             log.error("authorization을 잘못 보냈습니다.");
-            filterChain.doFilter(request , response);
+            filterChain.doFilter(request, response);
             return;
         }
 
@@ -41,25 +41,26 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = authorization.split(" ")[1];
 
         // 토큰 Expired되었는지 여부
-        if(JwtTokenUtil.isExpired(token, key)){
+        if (JwtTokenUtil.isExpired(token, key)) {
             log.error("토큰이 만료 되었습니다.");
-            filterChain.doFilter(request , response);
+            filterChain.doFilter(request, response);
             return;
         }
 
         // UserName Token에서 꺼내기
-        String email    = JwtTokenUtil.getEmail(token, key);
+        String email = JwtTokenUtil.getEmail(token, key);
         String userName = JwtTokenUtil.getUserName(token, key);
-        log.info("email:{}",email);
-        log.info("userName:{}",userName);
+        Long id = JwtTokenUtil.getId(token, key);
+        log.info("email:{}", email);
+        log.info("userName:{}", userName);
 
 
         // 권한 부여
         UsernamePasswordAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(email,null, List.of(new SimpleGrantedAuthority("USER"))); //DB에 role같은걸 지정해 놓았으면 거기에서 꺼내서 넣을 수있다.
+                new UsernamePasswordAuthenticationToken(id, null, List.of(new SimpleGrantedAuthority("USER"))); //DB에 role같은걸 지정해 놓았으면 거기에서 꺼내서 넣을 수있다.
         // Detail
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-        filterChain.doFilter(request,response);
+        filterChain.doFilter(request, response);
     }
 }
