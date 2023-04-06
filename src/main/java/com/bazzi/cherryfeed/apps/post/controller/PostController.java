@@ -20,21 +20,21 @@ public class PostController {
     private final PostService postService;
 
     @ApiOperation(value = "게시물등록")
-    @PostMapping("/post-post")
+    @PostMapping
     public ResponseEntity<String> createAnvsy(Authentication authentication, @RequestBody PostRequestDto postRequestDto) {
         //(고객아이디,dto)를 게시글등록 서비스에 보낸 후 응답메세지를 가져온다.
         return ResponseEntity.ok().body(postService.createPost(Long.parseLong(authentication.getName()), postRequestDto));
     }
 
     @ApiOperation(value = "게시물수정")
-    @PutMapping("/post-post/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
         //게시글 아이디와 dto를 게시글수정 서비스에 보낸 후 응답메세지를 가져온다.
         return ResponseEntity.ok().body(postService.updatePost(id, postRequestDto));
     }
 
     @ApiOperation(value = "게시물삭제")
-    @DeleteMapping("/post-post/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deletePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto) {
         //게시글 아이디를 게시글삭제 서비스에 보낸 후 응답메세지를 가져온다.
         return ResponseEntity.ok().body(postService.deletePost(id));

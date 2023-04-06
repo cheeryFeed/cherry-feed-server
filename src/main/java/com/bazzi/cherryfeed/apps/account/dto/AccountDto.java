@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 public class AccountDto {
 
     private AccountDto() {
-        throw new IllegalStateException("AccountDto");
     }
 
     @ApiModel(value = "회원가입 모델")

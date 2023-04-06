@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 
 public class CheckListRequestDto {
     private CheckListRequestDto() {
-        throw new IllegalStateException("CheckListRequestDto");
     }
 
     @ApiModel(value = "체크리스트등록모델")

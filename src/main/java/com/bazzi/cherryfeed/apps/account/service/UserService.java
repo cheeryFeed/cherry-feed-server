@@ -34,7 +34,7 @@ public class UserService {
         // user name 중복 체크
         accountRepository.findByEmail(email)
                 .ifPresent(user -> {
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, email + "는 이미 있습니다.");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, ErrorCode.USERNAME_DUPLICATED.getMessage());
                 });
         // 저장
         Account user = Account.builder()
@@ -57,12 +57,12 @@ public class UserService {
     public String login(String email, String password) {
         // userName없음
         Account selectedUser = accountRepository.findByEmail(email)
-                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, email + " 이 없습니다."));
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, ErrorCode.USERNAME_NOT_FOUND.getMessage()));
 
         // password틀림
         log.info("selectedPw:{} pw:{}", selectedUser.getPw(), password);
         if (!encoder.matches(password, selectedUser.getPw())) {
-            throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드를 잘못 입력 헀습니다.");
+            throw new AppException(ErrorCode.INVALID_PASSWORD, ErrorCode.INVALID_PASSWORD.getMessage());
         }
 
         // 맞았을경우
@@ -72,11 +72,11 @@ public class UserService {
 
     @Transactional
     public String withdrawal(Long id, AccountDto.Delete withdrawalRequestDto) {
-        Account user = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Account user = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
         WithdrawalDetail withdrawalDetail = WithdrawalDetail.builder()
                 .status(withdrawalRequestDto.getStatus())
                 .content(withdrawalRequestDto.getContent())
-                .createdById(user)
+                .account(user)
                 .build();
         withdrawalDetailRepository.save(withdrawalDetail);
         user.updateUserWithdrawal(withdrawalDetail, "9");
@@ -84,8 +84,8 @@ public class UserService {
     }
 
     public AccountDto.Response readUser(Long id) {
-        Account user = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        AccountDto.Response userInfoResponseDto = AccountDto.Response.builder()
+        Account user = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
+        return AccountDto.Response.builder()
                 .id(user.getId())
                 .isOpen(user.getIsOpen())
                 .introduce(user.getIntroduce())
@@ -100,12 +100,11 @@ public class UserService {
                 .link(user.getLink())
                 .phone(user.getPhone())
                 .build();
-        return userInfoResponseDto;
     }
 
     @Transactional
     public String userUpdate(Long id, AccountDto.Update userRequestUpdateDto) {
-        Account user = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Account user = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
         user.updateUserInfo(
                 userRequestUpdateDto.getIntroduce(),
                 userRequestUpdateDto.getLink(),

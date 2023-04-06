@@ -26,8 +26,7 @@ public class JoinService {
         // user name 중복 체크
         accountRepository.findByNickname(nickname)
                 .ifPresent(user -> {
-                    log.error(nickname + "는 이미 있습니다.");
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, nickname + "는 이미 있습니다.");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, ErrorCode.USERNAME_DUPLICATED.getMessage());
                 });
         return "닉네임 사용 가능.";
     }
@@ -49,7 +48,7 @@ public class JoinService {
         accountRepository.findByConnectCode(randomCode)
                 .ifPresent(user -> {
                     log.error(user + "코드와 중복 됩니다.");
-                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, user + "랜덤코드 오류 재요청바랍니다.");
+                    throw new AppException(ErrorCode.RANDOM_CODE_DUPLICATED,ErrorCode.RANDOM_CODE_DUPLICATED.getMessage());
                 });
         return randomCode;
     }
