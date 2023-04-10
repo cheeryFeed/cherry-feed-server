@@ -13,7 +13,7 @@ public class WithdrawalDetail extends BaseEntity {
 
     private Long status;        //탈퇴사유 1,2,3,4,5
     private String content;     //내용
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by_id") //탈퇴한아이디
     private Account account;
 }

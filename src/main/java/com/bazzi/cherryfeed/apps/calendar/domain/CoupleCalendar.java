@@ -37,7 +37,7 @@ public class CoupleCalendar extends BaseEntity {
     private Couple couple;                       //1. 이 객체 테이블의 PK아이디를 가져와
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by_id") //등록아이디
-    private Account createdById;
+    private Account account;
 
     @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CheckList> checkLists = new ArrayList<>(); //캘린더 하나에 들어있는 체크리스트들

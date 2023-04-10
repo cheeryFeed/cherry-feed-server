@@ -21,8 +21,8 @@ public class ReportUser extends BaseEntity {
     private Date dctDt;                //신고일자
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_no")      //신고게시물번호
-    private Post postNo;
+    private Post post;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by_id") //신고한 유저아이디
-    private CoupleCalendar createdById;
+    private CoupleCalendar coupleCalendar;
 }
