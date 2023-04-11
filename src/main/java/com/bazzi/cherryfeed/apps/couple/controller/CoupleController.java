@@ -25,6 +25,6 @@ public class CoupleController { //토큰이 발급된 대상만 이용가능한 
     @DeleteMapping
     public ResponseEntity<String> deleteConnecting(Authentication authentication) {
         coupleService.deleteCouple(Long.parseLong(authentication.getName())); //고객아이디
-        return ResponseEntity.ok().body("상태9변경완료.");
+        return ResponseEntity.ok().body("해지 완료.");
     }
 }

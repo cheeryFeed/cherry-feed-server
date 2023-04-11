@@ -26,7 +26,7 @@ public class AnvsyService {
     private final AnvsyRepository anvsyRepository;
 
     public String createAnvsy(Long id, AnvsyRequestDto anvsyRequestDto) {
-        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));   //user
+        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));   //user
         Couple coupleId = fidedUser.getCouple();                      //couple_id(PK)
 
         Anvsy anvsy = Anvsy.builder()
@@ -49,7 +49,7 @@ public class AnvsyService {
         Long imgId = anvsyRequestDto.getImgId();         //이미지아이디
         Date anvsyAt = anvsyRequestDto.getAnvsyAt();     //일정시간
 
-        Anvsy anvsy = anvsyRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Anvsy anvsy = anvsyRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
         anvsy.updateAnvsy(anvsyNm, imgId, status, anvsyAt);
         return "기념일 수정완료.";
     }
@@ -61,7 +61,7 @@ public class AnvsyService {
     }
 
     public List<AnvsyResponseDto> readAnvsy(Long id) {
-        Account findedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));//user
+        Account findedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));//user
         Couple coupleId = findedUser.getCouple();                        //couple_id(PK)
 
         List<Anvsy> anvsies = anvsyRepository.findByCoupleId(coupleId); // 조회한 일정들을 list에 담는다.

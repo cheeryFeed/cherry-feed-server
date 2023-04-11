@@ -7,7 +7,6 @@ import com.bazzi.cherryfeed.apps.calendar.dto.*;
 import com.bazzi.cherryfeed.apps.couple.domain.Couple;
 import com.bazzi.cherryfeed.apps.calendar.repository.CheckListRepository;
 import com.bazzi.cherryfeed.apps.calendar.repository.CoupleCalendarRepository;
-import com.bazzi.cherryfeed.apps.couple.repository.CoupleRepository;
 import com.bazzi.cherryfeed.apps.account.repository.AccountRepository;
 import com.bazzi.cherryfeed.exception.AppException;
 import com.bazzi.cherryfeed.exception.ErrorCode;
@@ -17,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,13 +23,16 @@ import java.util.List;
 @Slf4j
 public class CoupleCalendarService {
     private final AccountRepository accountRepository;
-    private final CoupleRepository coupleRepository;
     private final CoupleCalendarRepository coupleCalendarRepository;
     private final CheckListRepository checkListRepository;
 
     public String createCalendar(Long id, CalendarRequestDto.Create calendarRequestDto) {
-        Account findedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Account findedUser = accountRepository.findByIdFetchCouple(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
         Couple couple = findedUser.getCouple();
+
+        if (couple == null) {
+            throw new AppException(ErrorCode.COUPLE_NOT_FOUND);
+        }
         //캘린더 저장
         CoupleCalendar coupleCalendar = CoupleCalendar.builder()
                 .partiId1(calendarRequestDto.getPartiId1())
@@ -46,7 +47,7 @@ public class CoupleCalendarService {
                 .content(calendarRequestDto.getContent())
                 .alarmAt(calendarRequestDto.getAlarmAt())
                 .type(calendarRequestDto.getType())
-                .coupleId(couple)
+                .couple(couple)
                 .createdById(findedUser)
                 .build();
         CoupleCalendar savedCalendar = coupleCalendarRepository.save(coupleCalendar);
@@ -65,7 +66,7 @@ public class CoupleCalendarService {
     }
 
     public List<CalendarRequestDto.Response> readCalendar(Long id) {
-        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));     //user
+        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));     //user
         Couple coupleId = fidedUser.getCouple();                        //couple_id(PK)
 
         List<CoupleCalendar> calendars = coupleCalendarRepository.findByCoupleId(coupleId);// 조회한 일정들을 list에 담는다.
@@ -107,7 +108,7 @@ public class CoupleCalendarService {
 
     @Transactional
     public String updateCalendar(Long id, CalendarRequestDto.Update calendarUpdateRequestDto) {
-        CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
         coupleCalendar.updateCalendar(calendarUpdateRequestDto);
 
         List<CheckListRequestDto.Update> checkList = calendarUpdateRequestDto.getCheckList();//체크리스트
@@ -115,7 +116,7 @@ public class CoupleCalendarService {
             Long checkid = checkListUpdateRequestDto.getId();
             String checkContent = checkListUpdateRequestDto.getContent();
             Boolean isFinish = checkListUpdateRequestDto.getIsFinish();
-            CheckList findedCheckList = checkListRepository.findById(checkid).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+            CheckList findedCheckList = checkListRepository.findById(checkid).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
             findedCheckList.updateCheckList(checkContent, isFinish);
         }
         return "캘린더 수정완료.";

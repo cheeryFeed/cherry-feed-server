@@ -31,8 +31,8 @@ public class PostService {
     private final CoupleCalendarRepository coupleCalendarRepository;
 
     public String createPost(Long id, PostRequestDto postRequestDto) {
-        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)); //유저
-        CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(postRequestDto.getCalendarId()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage())); //유저
+        CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(postRequestDto.getCalendarId()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
 
         Post post = Post.builder()
                 .postNm(postRequestDto.getPostNm())
@@ -49,8 +49,8 @@ public class PostService {
     @Transactional
     public String updatePost(Long id, PostRequestDto postRequestDto) {
         Long calendarId = postRequestDto.getCalendarId();
-        CoupleCalendar coupleCalendarId = coupleCalendarRepository.findById(calendarId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        Post post = postRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        CoupleCalendar coupleCalendarId = coupleCalendarRepository.findById(calendarId).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
+        Post post = postRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
         post.updatePost(
                 coupleCalendarId,
                 postRequestDto.getPostNm(),

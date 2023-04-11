@@ -12,7 +12,6 @@ import java.util.List;
 
 public class CalendarRequestDto {
     private CalendarRequestDto() {
-        throw new IllegalStateException("CalendarRequestDto");
     }
 
     @ApiModel(value = "캘린더등록모델")

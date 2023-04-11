@@ -38,6 +38,9 @@ dependencies {
 	//JWT
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
+	//gson Gson은 Java에서 Json을 파싱하고, 생성하기 위해 사용되는 구글에서 개발한 오픈소스입니다.
+	implementation 'com.google.code.gson:gson:2.8.7'
+
 
 
 

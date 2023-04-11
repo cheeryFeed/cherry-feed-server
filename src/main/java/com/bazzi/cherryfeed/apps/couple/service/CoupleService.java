@@ -21,11 +21,11 @@ public class CoupleService {
     @Transactional
     public String createCouple(Long id, String connectCode) {
         // n+1문제 해결
-        Account requestUser = accountRepository.findByIdFetchCouple(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        Account receiveUser = accountRepository.findByConnectCodeFetchCouple(connectCode).orElseThrow(() -> new AppException(ErrorCode.CONNECT_NOT_FOUND));
+        Account requestUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
+        Account receiveUser = accountRepository.findByConnectCode(connectCode).orElseThrow(() -> new AppException(ErrorCode.CONNECT_NOT_FOUND, ErrorCode.CONNECT_NOT_FOUND.getMessage()));
 
         if (requestUser.getCouple() != null || receiveUser.getCouple() != null) {
-            throw new AppException(ErrorCode.USERNAME_DUPLICATED, receiveUser.getEmail() + "님 커플은 이미 존재합니다.");
+            throw new AppException(ErrorCode.COUPLE_DUPLICATED, ErrorCode.COUPLE_DUPLICATED.getMessage());
         } else {
             //  MapStruct --> 이친구를 찾아서 도입하는것도 추천.
             Couple couple = Couple.builder()
@@ -48,7 +48,7 @@ public class CoupleService {
                     }
                 },
                 () -> {
-                    throw new AppException(ErrorCode.USER_NOT_FOUND);
+                    throw new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage());
                 }
         );
     }

@@ -8,15 +8,13 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface AccountRepository extends JpaRepository<Account, Long> { //관리할 엔티티,PK아이디
-    //조회:findBy ,readBy ,queryBy , getBy 이렇게 시작해야함
+public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByEmail(String email);
 
     Optional<Account> findByNickname(String nickname);
 
     Optional<Account> findByConnectCode(String code);
 
-    //20230403추가
     @Query(value = "select user,couple from Account user left join fetch Couple couple on user.couple = couple where user.id = :id")
     Optional<Account> findByIdFetchCouple(@Param("id") Long id);
 
