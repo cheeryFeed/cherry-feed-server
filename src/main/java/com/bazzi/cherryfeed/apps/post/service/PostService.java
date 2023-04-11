@@ -39,7 +39,7 @@ public class PostService {
                 .postContent(postRequestDto.getPostContent())
                 .location(postRequestDto.getLocation())
                 .imgId(postRequestDto.getImgId())
-                .createdById(fidedUser)
+                .account(fidedUser)
                 .calId(coupleCalendar)
                 .build();
         postRepository.save(post);

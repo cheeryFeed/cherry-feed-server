@@ -48,7 +48,7 @@ public class CoupleCalendarService {
                 .alarmAt(calendarRequestDto.getAlarmAt())
                 .type(calendarRequestDto.getType())
                 .couple(couple)
-                .createdById(findedUser)
+                .account(findedUser)
                 .build();
         CoupleCalendar savedCalendar = coupleCalendarRepository.save(coupleCalendar);
 
