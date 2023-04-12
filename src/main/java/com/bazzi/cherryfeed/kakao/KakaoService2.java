@@ -4,6 +4,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -25,7 +27,7 @@ public class KakaoService2 {
         // 엑세스 토큰 받기
         String accessToken = getAccessToken(authorize_code);
         // 사용자 정보 읽어오기
-        Map<String,Object> userInfo = getUserInfo(accessToken);
+        Map<String,Object> userInfo = getUserInfo2(accessToken);
 
         System.out.println(userInfo.toString());
         return userInfo;
@@ -47,7 +49,9 @@ public class KakaoService2 {
 
         String accessTokenResponse = restTemplate.postForObject("https://kauth.kakao.com/oauth/token", entity, String.class);
         System.out.println(accessTokenResponse.toString());
-        return accessTokenResponse.toString();
+        JSONObject jsonObject = JSONObject.fromObject(accessTokenResponse.toString());
+        String accessToken = jsonObject.getString("access_token");
+        return accessToken;
         //return "redirect:webauthcallback://success?customToken="+result.get("customToken").toString();
     }
     public Map<String, Object> getUserInfo (String access_Token) { //AccessToken을 받아서 User정보를 획득하고 return 한다.
@@ -94,21 +98,36 @@ public class KakaoService2 {
         String reqURL = "https://kapi.kakao.com/v2/user/me";
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(access_Token);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
 
-        ResponseEntity<String> response = new RestTemplate().exchange(reqURL, HttpMethod.GET, entity, String.class);
+
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>();
+        //JSONObject properties = new JSONObject();
+        JSONArray properties = new JSONArray();
+        properties.add("kakao_account.email");
+        properties.add("kakao_account.gender");
+        properties.add("kakao_account.birthday");
+        body.add("property_keys",properties.toString());
+
+        HttpEntity<MultiValueMap<String,String>> entity = new HttpEntity(body,headers);
+
+
+
+
+        ResponseEntity<String> response = new RestTemplate().exchange(reqURL, HttpMethod.POST, entity, String.class);
         if (response.getStatusCode() == HttpStatus.OK) {
             JsonElement element = JsonParser.parseString(response.getBody());
-            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+            //JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
             JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
-            String nickname = properties.getAsJsonObject().get("nickname").getAsString();
+            //String nickname = properties.getAsJsonObject().get("nickname").getAsString();
             String email = kakao_account.getAsJsonObject().get("email").getAsString();
             int id = element.getAsJsonObject().get("id").getAsInt();
-            userInfo.put("nickname", nickname);
+            //String email = kakao_account.getAsJsonObject().get("email").getAsString();
+            //String id = "KAKAO_"+element.getAsJsonObject().get("id").toString();
+            //userInfo.put("nickname", nickname);
             userInfo.put("email", email);
             userInfo.put("id", id);
             log.info("id =" + id);
-            log.info("nickname =" + nickname);
+            //log.info("nickname =" + nickname);
             log.info("email =" + email);
         } else {
             throw new RuntimeException("Failed to get user info from Kakao API");
