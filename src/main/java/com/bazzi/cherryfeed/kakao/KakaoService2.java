@@ -1,14 +1,5 @@
 package com.bazzi.cherryfeed.kakao;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -19,9 +10,17 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 @Slf4j
-public class KakaoService {
+public class KakaoService2 {
     public Map<String,Object> execKakaoLogin(String authorize_code) { //getAceesToken(), getUserInfo() 호출
         // 엑세스 토큰 받기
         String accessToken = getAccessToken(authorize_code);
@@ -94,8 +93,9 @@ public class KakaoService {
         Map<String, Object> userInfo = new HashMap<>();
         String reqURL = "https://kapi.kakao.com/v2/user/me";
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(access_Token); //해더에 토큰을 담는다.
+        headers.setBearerAuth(access_Token);
         HttpEntity<String> entity = new HttpEntity<>(headers);
+
         ResponseEntity<String> response = new RestTemplate().exchange(reqURL, HttpMethod.GET, entity, String.class);
         if (response.getStatusCode() == HttpStatus.OK) {
             JsonElement element = JsonParser.parseString(response.getBody());

@@ -35,7 +35,7 @@ public class UserService {
         if (byEmail.isPresent()) { // 값이 이미 존재하는 경우
             return JwtTokenUtil.createToken(byEmail.get().getId(), key, expireTimeMs); //발행하는 토큰
         } else { // 값이 존재하지 않는 경우
-            return "회원가입 진행해야함.";
+            return email;
         }
     }
     public String join(AccountDto.Create userJoinRequestDto) {
