@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -28,6 +30,14 @@ public class UserService {
     private String key;
     private Long expireTimeMs = 1000 * 60 * 60l; //1시간
 
+    public String kakaoLogin(String email){
+        Optional<Account> byEmail = accountRepository.findByEmail(email);
+        if (byEmail.isPresent()) { // 값이 이미 존재하는 경우
+            return JwtTokenUtil.createToken(byEmail.get().getId(), key, expireTimeMs); //발행하는 토큰
+        } else { // 값이 존재하지 않는 경우
+            return "회원가입 진행해야함.";
+        }
+    }
     public String join(AccountDto.Create userJoinRequestDto) {
         String email = userJoinRequestDto.getEmail();    //로그인 이메일
         String password = userJoinRequestDto.getPassword(); //비밀번호
