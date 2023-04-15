@@ -10,7 +10,7 @@
 <img src="https://img.shields.io/badge/springboot-%236DB33F.svg?style=for-the-badge&logo=springboot&logoColor=white"/>
 <img src="https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white"/>
 <img src="https://img.shields.io/badge/springsecurity-%236DB33F.svg?style=for-the-badge&logo=springsecurity&logoColor=white"/>
-<img src="https://img.shields.io/badge/apachetomcat-%#F8DC75.svg?style=for-the-badge&logo=apachetomcat&logoColor=white"/>
+<img src="https://img.shields.io/badge/apachetomcat-%236DB33F.svg?style=for-the-badge&logo=apachetomcat&logoColor=white"/>
 
 <img src="https://img.shields.io/badge/JWT-black?style=for-the-badge&logo=JSON%20web%20tokens"/>
 
