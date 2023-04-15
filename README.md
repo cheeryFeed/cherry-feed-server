@@ -8,3 +8,7 @@
 체리피드 프로젝트 노션 :https://cherry-feed-side-project-luca-seceret-bazzi.notion.site/f88bf4c1ba6b4f62a309d7b4d66735f7
 
 개인 노션: https://various-air-1c4.notion.site/57214cba232847b38188d7b2261e75b1
+
+ERD : https://www.erdcloud.com/d/vtnPxiYs3bPAPA3d6
+
+![image](https://user-images.githubusercontent.com/88577086/232207789-981f2081-a2f0-4e0f-a91f-708e1389c1f5.png)
