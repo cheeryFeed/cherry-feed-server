@@ -4,6 +4,8 @@ import com.bazzi.cherryfeed.apps.account.dto.*;
 import com.bazzi.cherryfeed.apps.account.service.JoinService;
 import com.bazzi.cherryfeed.apps.account.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -64,5 +66,16 @@ public class AccountController {
     public ResponseEntity<String> updateUser(Authentication authentication, @RequestBody AccountDto.Update userRequestUpdateDto) {
         //(토큰에서 꺼낸 아이디,dto)를 서비스로 보내 응답메세지를 받아온다.
         return ResponseEntity.ok().body(userService.userUpdate(Long.parseLong(authentication.getName()), userRequestUpdateDto));
+    }
+    @ApiOperation(value = "토큰 재발급", notes = "토큰을 재발급한다")
+    @PostMapping(value = "/refresh")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "X-AUTH-TOKEN", value = "access-token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "REFRESH-TOKEN", value = "refresh-token", required = true, dataType = "String", paramType = "header")
+    })
+    public ResponseEntity<AccountDto.ResponseToken> refreshToken(
+            @RequestHeader(value="X-AUTH-TOKEN") String token,
+            @RequestHeader(value="REFRESH-TOKEN") String refreshToken ) {
+        return ResponseEntity.ok().body(userService.refreshToken(token, refreshToken));
     }
 }

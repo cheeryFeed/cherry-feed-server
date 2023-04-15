@@ -5,6 +5,8 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.nio.file.AccessDeniedException;
+
 @AllArgsConstructor
 @Getter
 
@@ -16,7 +18,8 @@ public enum ErrorCode {
     USERNAME_NOT_FOUND(HttpStatus.NOT_FOUND, "There is no member with that ID. Please enter again."),
     CONNECT_NOT_FOUND(HttpStatus.NOT_FOUND, "Connect code not found."),
     INVALID_PASSWORD(HttpStatus.UNAUTHORIZED, "You entered the wrong password."),
-    USER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "The ID corresponding to the token could not be found.");
+    USER_NOT_FOUND(HttpStatus.UNAUTHORIZED, "The ID corresponding to the token could not be found."),
+    ACCESS_DENIED(HttpStatus.UNAUTHORIZED, "Token Error");
 
     private HttpStatus httpStatus;
     private String message;

@@ -22,4 +22,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Optional<Account> findByConnectCodeFetchCouple(@Param("connectCode") String connectCode);
     //boolean existsByCoupleId
 
+    Optional<Account> findByRefreshToken(String refreshToken);
+
 }

@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.nio.file.AccessDeniedException;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -28,14 +30,28 @@ public class UserService {
     private final BCryptPasswordEncoder encoder;
     @Value("${jwt.token.secret}") //application.yml에
     private String key;
-    private Long expireTimeMs = 1000 * 60 * 60l; //1시간
+    private Long expireTimeMs = 1000 * 60 * 60l; //10분
+    private Long refreshExpireTimeMs = 1000 * 60 * 60l; //1시간
 
-    public String kakaoLogin(String email){
+    public AccountDto.ResponseToken kakaoLogin(Map<String,Object> userInfo){
+        String email = String.valueOf(userInfo.get("email"));
+        String id = String.valueOf(userInfo.get("id"));
         Optional<Account> byEmail = accountRepository.findByEmail(email);
         if (byEmail.isPresent()) { // 값이 이미 존재하는 경우
-            return JwtTokenUtil.createToken(byEmail.get().getId(), key, expireTimeMs); //발행하는 토큰
+            String refreshToken = JwtTokenUtil.createRefreshToken(key, refreshExpireTimeMs);
+            return new AccountDto.ResponseToken(JwtTokenUtil.createToken(byEmail.get().getId(), key, expireTimeMs),refreshToken); //발행하는 토큰
         } else { // 값이 존재하지 않는 경우
-            return email;
+            Account user = Account.builder()
+                    .email(email)
+                    .status("1")
+                    .socialId("KAKAO_"+id)
+                    .build();
+            accountRepository.save(user);
+
+            Account findedUser = accountRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
+            String refreshToken = JwtTokenUtil.createRefreshToken(key, refreshExpireTimeMs);
+            return new AccountDto.ResponseToken(JwtTokenUtil.createToken(findedUser.getId(), key, expireTimeMs),refreshToken);
+            //return JwtTokenUtil.createToken(findedUser.getId(), key, expireTimeMs); //발행하는 토큰
         }
     }
     public String join(AccountDto.Create userJoinRequestDto) {
@@ -126,4 +142,19 @@ public class UserService {
         );
         return "업데이트 완료.";
     }
+
+
+    @Transactional
+    public AccountDto.ResponseToken refreshToken(String token, String refreshToken) {
+        // 아직 만료되지 않은 토큰으로는 refresh 할 수 없음
+        if(!JwtTokenUtil.validateTokenExceptExpiration(token,key)) throw new AppException(ErrorCode.ACCESS_DENIED,ErrorCode.ACCESS_DENIED.getMessage());
+        Account account = accountRepository.findByRefreshToken(refreshToken).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));
+        account.updateUserToken(JwtTokenUtil.createRefreshToken(key,refreshExpireTimeMs));
+        return new AccountDto.ResponseToken( JwtTokenUtil.createToken(account.getId(),key,expireTimeMs), account.getRefreshToken());
+    }
+
+
+
+
+
 }

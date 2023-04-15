@@ -36,6 +36,7 @@ public class Account extends BaseEntity {
     private String phone;          //휴대폰번호 varchar(20)
     private String gender;         //성별 varchar(16)
     private String role;           //권한 USER_ROLE,ADMIN_ROLE,BANNED_ROLE
+    private String refreshToken;   //리프래시 토큰 저장용도
     //private String withdrawalDetailId; //서비스탈퇴이력아이디
     @OneToOne
     @JoinColumn(name = "withdrawal_detail_id") //서비스탈퇴이력아이디
@@ -62,5 +63,8 @@ public class Account extends BaseEntity {
         this.isTerms = isTerms;
         this.phone = phone;
         this.nickname = nickname;
+    }
+    public void updateUserToken(String token) {
+        this.refreshToken = token;
     }
 }

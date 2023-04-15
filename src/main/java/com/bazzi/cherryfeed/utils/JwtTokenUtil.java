@@ -1,8 +1,6 @@
 package com.bazzi.cherryfeed.utils;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 
 import java.util.Date;
 
@@ -41,4 +39,27 @@ public class JwtTokenUtil {
                 .compact()
                 ;
     }
+
+    public static String createRefreshToken(String key, long expireTimeMs) {
+        return Jwts.builder()
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expireTimeMs))
+                .signWith(SignatureAlgorithm.HS256, key)
+                .compact();
+    }
+
+    // jwt 토큰의 유효성 + 로그아웃 확인 + 만료일자만 초과한 토큰이면 return true;
+    public static boolean validateTokenExceptExpiration(String jwtToken,String secretKey) {
+        try {
+            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken);
+            return claims.getBody().getExpiration().before(new Date());
+        } catch(ExpiredJwtException e) {
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+
+
 }

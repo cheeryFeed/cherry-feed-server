@@ -116,4 +116,15 @@ public class AccountDto {
         @ApiModelProperty(value = "비밀번호")
         private String pw;
     }
+
+    @ApiModel(value = "토큰모델")
+    @AllArgsConstructor
+    @Getter
+    @NoArgsConstructor
+    public static class ResponseToken {
+        @ApiModelProperty(value = "access토큰")
+        private String accessToken;
+        @ApiModelProperty(value = "refresh토큰")
+        private String refreshToken;
+    }
 }
