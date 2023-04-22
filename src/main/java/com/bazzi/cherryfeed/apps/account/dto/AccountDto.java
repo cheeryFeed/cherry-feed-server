@@ -39,6 +39,19 @@ public class AccountDto {
         private Long imgId;
     }
 
+    @ApiModel(value = "카카오 회원가입 모델")
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Getter
+    public static class CreateKakao {
+        @ApiModelProperty(value = "닉네임", required = true)
+        private String nickname;       //닉네임 varchar(16)
+        @ApiModelProperty(value = "생일 - 8자 문자타입", required = true)
+        private String birth;       //생년월일 date
+        @ApiModelProperty(value = "연결코드", required = true)
+        private String connectCode;
+    }
+
     @ApiModel(value = "유저조회응답모델")
     @Getter
     @AllArgsConstructor

@@ -80,6 +80,17 @@ public class UserService {
         return "회원가입이 성공하였습니다.";
     }
 
+    @Transactional
+    public String joinKakao(Long id, AccountDto.CreateKakao createKakaoDto) {
+        Account user = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
+        user.kakaoUserInfo(
+                createKakaoDto.getBirth(),
+                createKakaoDto.getNickname(),
+                createKakaoDto.getConnectCode()
+        );
+        return "업데이트 완료.";
+    }
+
     public String login(String email, String password) {
         // userName없음
         Account selectedUser = accountRepository.findByEmail(email)

@@ -22,13 +22,13 @@ public class JoinService {
     private final AccountRepository accountRepository;
 
     //닉네임 중복체크 서비스 로직
-    public String duplicationCheckNicknameService(String nickname) {
+    public boolean duplicationCheckNicknameService(String nickname) {
         // user name 중복 체크
         accountRepository.findByNickname(nickname)
                 .ifPresent(user -> {
                     throw new AppException(ErrorCode.USERNAME_DUPLICATED, ErrorCode.USERNAME_DUPLICATED.getMessage());
                 });
-        return "닉네임 사용 가능.";
+        return true;
     }
 
     //연결코드 생성 서비스 로직

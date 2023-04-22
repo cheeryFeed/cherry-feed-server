@@ -64,6 +64,12 @@ public class Account extends BaseEntity {
         this.phone = phone;
         this.nickname = nickname;
     }
+
+    public void kakaoUserInfo(String birth, String nickname, String connectCode) {
+        this.birth = birth;
+        this.nickname = nickname;
+        this.connectCode = connectCode;
+    }
     public void updateUserToken(String token) {
         this.refreshToken = token;
     }

@@ -27,9 +27,25 @@ public class JwtFilter extends OncePerRequestFilter {
     //jwt필터 문이라고 생각하면됨. 여기를 통하면 접근할 권한을 부여할수있다.
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String path = request.getRequestURI();
+
         final String authorization = request.getHeader(HttpHeaders.AUTHORIZATION);
         log.info("authorization : {}", authorization);
 
+
+        if (
+                path.startsWith("/api/v1/users/join")
+                        || path.startsWith("/api/v1/users/login")
+                        || path.startsWith("/api/v1/users/duplicationcheck/nickname")
+                        || path.startsWith("/api/v1/users/create/connectcode")
+                        || path.startsWith("/swagger-ui.html")
+                        || path.startsWith("/kakao")
+                        || path.startsWith("/kakaoToken")
+        ) {
+            // "/api/v1/users"와 "/api/v1/posts" 경로를 제외한 API는 필터링하지 않습니다.
+            filterChain.doFilter(request, response);
+            return;
+        }
         // token안보내면 Block
         if (authorization == null || !authorization.startsWith("Bearer ")) {
             log.error("authorization을 잘못 보냈습니다.");

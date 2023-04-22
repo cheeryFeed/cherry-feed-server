@@ -26,6 +26,13 @@ public class AccountController {
         return ResponseEntity.ok().body(userService.join(userJoinRequestDto));
     }
 
+    @ApiOperation(value = "카카오회원가입", notes = "회원가입을 진행한다. 회원가입이 성공하면 200응답과 함께 회원가입이 성공하였습니다.가 반환됨.")
+    @PostMapping("/kakao-join") // URI=  api/v1/users/join - post요청시 회원가입 진행
+    public ResponseEntity<String> join(Authentication authentication,@RequestBody AccountDto.CreateKakao RequestDto) {
+        return ResponseEntity.ok().body(userService.joinKakao(Long.parseLong(authentication.getName()),RequestDto));
+    }
+
+
     @ApiOperation(value = "로그인", notes = "로그인을 진행한다. 회원가입이 성공하면 200응답과 함께 바디에 토큰이 발급됨")
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody AccountDto.Login dto) {
@@ -34,7 +41,7 @@ public class AccountController {
 
     @ApiOperation(value = "닉네임중복조회", notes = "회원가입절차에서 닉네임조회기능. 사용가능하면 200응답과 함께 닉네임 사용 가능.가 반환됨.")
     @GetMapping("/duplicationcheck/nickname")
-    public ResponseEntity<String> duplicationcheckNickname(
+    public ResponseEntity<Boolean> duplicationcheckNickname(
             @RequestParam(name = "nickname", required = true) String nickname) {
         return ResponseEntity.ok().body(joinService.duplicationCheckNicknameService(nickname));
     }
