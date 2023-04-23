@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(value = "/api/v1/users", produces = "application/json; charset=utf8") //자꾸 한글깨지길래 utf-8변환함
 @RequiredArgsConstructor
+@Slf4j
 public class AccountController {
     private final UserService userService;
     private final JoinService joinService;
@@ -65,6 +67,7 @@ public class AccountController {
     @GetMapping
     public ResponseEntity<AccountDto.Response> readUser(Authentication authentication) {
         //토큰에서 꺼낸 아이디를 서비스에 보내 응답데이터를 받아온다.
+        log.info("토큰 : "+authentication.toString());
         return ResponseEntity.ok().body(userService.readUser(Long.parseLong(authentication.getName())));
     }
 

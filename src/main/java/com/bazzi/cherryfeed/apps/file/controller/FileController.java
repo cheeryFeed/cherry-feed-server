@@ -32,8 +32,8 @@ public class FileController {
 
     @ApiOperation(value = "파일다운로드")
     @GetMapping("/file-system/{fileName}")
-    public ResponseEntity<?> downloadImageToFileSystem(@PathVariable("fileName") String fileName) throws IOException {
-        byte[] downloadImage = storageService.downloadImageFromFileSystem(fileName);
+    public ResponseEntity<?> downloadImageToFileSystem(@PathVariable("id") Long id) throws IOException {
+        byte[] downloadImage = storageService.downloadImageFromFileSystem(id);
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.valueOf("image/png"))
                 .body(downloadImage);

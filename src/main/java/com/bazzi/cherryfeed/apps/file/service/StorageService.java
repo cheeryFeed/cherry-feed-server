@@ -43,8 +43,8 @@ public class StorageService {
         return null;
     }
 
-    public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
-        FileStore fileStore = fileDataRepository.findByFileName(fileName)
+    public byte[] downloadImageFromFileSystem(Long id) throws IOException {
+        FileStore fileStore = fileDataRepository.findById(id)
                 .orElseThrow(RuntimeException::new);
 
         String filePath = fileStore.getSaveLocation();

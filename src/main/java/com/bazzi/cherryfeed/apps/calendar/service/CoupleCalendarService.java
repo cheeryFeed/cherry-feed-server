@@ -66,15 +66,16 @@ public class CoupleCalendarService {
     }
 
     public List<CalendarRequestDto.Response> readCalendar(Long id) {
-        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));     //user
-        Couple coupleId = fidedUser.getCouple();                        //couple_id(PK)
+        Account fidedUser = accountRepository.findByIdFetchCouple(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));     //user
+        Couple couple = fidedUser.getCouple();                        //couple_id(PK)
+        log.info(couple.toString());
 
-        List<CoupleCalendar> calendars = coupleCalendarRepository.findByCoupleId(coupleId);// 조회한 일정들을 list에 담는다.
+        List<CoupleCalendar> calendars = coupleCalendarRepository.findByCoupleId(couple.getId());// 조회한 일정들을 list에 담는다.
 
         List<CalendarRequestDto.Response> calendarResponseDtoList = new ArrayList<>();// 응답DTO를 담을 리스트를 생성한다.
 
         for (CoupleCalendar calendar : calendars) {
-            List<CheckList> checkListList = checkListRepository.findByCalendarId(calendar);
+            List<CheckList> checkListList = checkListRepository.findByCalendarId(calendar.getId());
             List<CheckListRequestDto.Response> checkListResponseDtoList = new ArrayList<>();
 
             for (CheckList checkList : checkListList) {

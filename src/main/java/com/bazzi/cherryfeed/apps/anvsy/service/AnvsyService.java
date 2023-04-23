@@ -14,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -26,31 +28,42 @@ public class AnvsyService {
     private final AnvsyRepository anvsyRepository;
 
     public String createAnvsy(Long id, AnvsyRequestDto anvsyRequestDto) {
-        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));   //user
+        Account fidedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage()));   //user
         Couple coupleId = fidedUser.getCouple();                      //couple_id(PK)
-
-        Anvsy anvsy = Anvsy.builder()
-                .anvsyNm(anvsyRequestDto.getAnvsyNm())
-                .anvsyAt(anvsyRequestDto.getAnvsyAt())
-                .status(anvsyRequestDto.getStatus())
-                .coupleId(coupleId)
-                .imgId(anvsyRequestDto.getImgId())
-                .build();
-        anvsyRepository.save(anvsy);
+        try {
+            String dateString = anvsyRequestDto.getAnvsyAt();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            Date date = dateFormat.parse(dateString);
+            Anvsy anvsy = Anvsy.builder()
+                    .anvsyNm(anvsyRequestDto.getAnvsyNm())
+                    .anvsyAt(date)
+                    .status(anvsyRequestDto.getStatus())
+                    .coupleId(coupleId)
+                    .imgId(anvsyRequestDto.getImgId())
+                    .build();
+            anvsyRepository.save(anvsy);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return "등록완료.";
     }
+
 
     //기념일 수정 서비스로직
     @Transactional
     public String updateAnvsy(Long id, AnvsyRequestDto anvsyRequestDto) {
-
-        String anvsyNm = anvsyRequestDto.getAnvsyNm();   //일정이름
-        int status = anvsyRequestDto.getStatus();        //일정상태
-        Long imgId = anvsyRequestDto.getImgId();         //이미지아이디
-        Date anvsyAt = anvsyRequestDto.getAnvsyAt();     //일정시간
-
-        Anvsy anvsy = anvsyRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
-        anvsy.updateAnvsy(anvsyNm, imgId, status, anvsyAt);
+        try {
+            String anvsyNm = anvsyRequestDto.getAnvsyNm();   //일정이름
+            int status = anvsyRequestDto.getStatus();        //일정상태
+            Long imgId = anvsyRequestDto.getImgId();         //이미지아이디
+            String dateString = anvsyRequestDto.getAnvsyAt();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            Date anvsyAt = dateFormat.parse(dateString);
+            Anvsy anvsy = anvsyRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
+            anvsy.updateAnvsy(anvsyNm, imgId, status, anvsyAt);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return "기념일 수정완료.";
     }
 
