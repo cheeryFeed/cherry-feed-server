@@ -74,6 +74,8 @@ public class AnvsyService {
     }
 
     public List<AnvsyResponseDto> readAnvsy(Long id) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
+
         Account findedUser = accountRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));//user
         Couple coupleId = findedUser.getCouple();                        //couple_id(PK)
 
@@ -82,10 +84,11 @@ public class AnvsyService {
         List<AnvsyResponseDto> anvsyResponseDtoList = new ArrayList<>();// 응답DTO를 담을 리스트를 생성한다.
 
         for (Anvsy anvsy : anvsies) {
+
             AnvsyResponseDto dto = AnvsyResponseDto.builder()           //생성한 DTO리스트에 조회한 일정들을 담는다.
                     .id(anvsy.getId())
                     .anvsyNm(anvsy.getAnvsyNm())
-                    .anvsyAt(anvsy.getAnvsyAt())
+                    .anvsyAt(format.format(anvsy.getAnvsyAt()))
                     .status(anvsy.getStatus())
                     .imgId(anvsy.getImgId())
                     .build();

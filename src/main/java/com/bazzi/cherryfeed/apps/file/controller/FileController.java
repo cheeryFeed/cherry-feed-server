@@ -5,6 +5,7 @@ import com.bazzi.cherryfeed.apps.file.service.StorageService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping(value = "/api/v1/file", produces = "application/json; charset=utf8")
 @RequiredArgsConstructor
+@Slf4j
 
 public class FileController {
     private final StorageService storageService;
@@ -31,7 +33,7 @@ public class FileController {
     }
 
     @ApiOperation(value = "파일다운로드")
-    @GetMapping("/file-system/{fileName}")
+    @GetMapping("/file-system/{id}")
     public ResponseEntity<?> downloadImageToFileSystem(@PathVariable("id") Long id) throws IOException {
         byte[] downloadImage = storageService.downloadImageFromFileSystem(id);
         return ResponseEntity.status(HttpStatus.OK)

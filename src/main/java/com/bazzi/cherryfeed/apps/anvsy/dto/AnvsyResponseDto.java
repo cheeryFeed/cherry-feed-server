@@ -20,7 +20,7 @@ public class AnvsyResponseDto {
     @ApiModelProperty(value = "기념일 이름")
     private String anvsyNm;
     @ApiModelProperty(value = "기념일 날짜")
-    private Date anvsyAt;
+    private String anvsyAt;
     @ApiModelProperty(value = "이미지아이디")
     private Long imgId;
     @ApiModelProperty(value = "상태값 - 1:반복,2:목표")

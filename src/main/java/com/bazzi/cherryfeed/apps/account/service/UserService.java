@@ -128,7 +128,7 @@ public class UserService {
                 .introduce(user.getIntroduce())
                 .link(user.getLink())
                 .nickname(user.getNickname())
-                //.coupleId(user.getCouple().getId())
+                .coupleId(user.getCouple().getId())
                 .birth(user.getBirth())
                 .connectCode(user.getConnectCode())
                 .email(user.getEmail())
