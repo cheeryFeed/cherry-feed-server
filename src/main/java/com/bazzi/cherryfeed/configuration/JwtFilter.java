@@ -2,7 +2,8 @@ package com.bazzi.cherryfeed.configuration;
 
 import com.bazzi.cherryfeed.apps.account.service.UserService;
 import com.bazzi.cherryfeed.utils.JwtTokenUtil;
-import com.google.common.net.HttpHeaders;
+//import com.google.common.net.HttpHeaders;
+import org.springframework.http.HttpHeaders;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -16,7 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -72,9 +73,15 @@ public class JwtFilter extends OncePerRequestFilter {
 
 
         // 권한 부여
+        // 권한 부여
         UsernamePasswordAuthenticationToken authenticationToken =
+                new UsernamePasswordAuthenticationToken(id, null, Arrays.asList(new SimpleGrantedAuthority("USER"))); //DB에 role같은걸 지정해 놓았으면 거기에서 꺼내서 넣을 수있다.
+        //20230902위 소스로 수정
+        /*UsernamePasswordAuthenticationToken authenticationToken =
                 new UsernamePasswordAuthenticationToken(id, null, List.of(new SimpleGrantedAuthority("USER"))); //DB에 role같은걸 지정해 놓았으면 거기에서 꺼내서 넣을 수있다.
+        
         // Detail
+         */
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         filterChain.doFilter(request, response);
