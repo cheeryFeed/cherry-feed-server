@@ -15,7 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -29,9 +32,19 @@ public class CoupleCalendarService {
     public String createCalendar(Long id, CalendarRequestDto.Create calendarRequestDto) {
         Account findedUser = accountRepository.findByIdFetchCouple(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
         Couple couple = findedUser.getCouple();
-
+        Date startDate = null;
+        Date endDate = null;
         if (couple == null) {
             throw new AppException(ErrorCode.COUPLE_NOT_FOUND);
+        }
+        try {
+            String startAt = calendarRequestDto.getStartAt();
+            String endAt = calendarRequestDto.getEndAt();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+            startDate = dateFormat.parse(startAt);
+            endDate = dateFormat.parse(endAt);
+        } catch (ParseException pe) {
+            log.error(pe.toString());
         }
         //캘린더 저장
         CoupleCalendar coupleCalendar = CoupleCalendar.builder()
@@ -39,8 +52,8 @@ public class CoupleCalendarService {
                 .partiId2(calendarRequestDto.getPartiId2())
                 .title(calendarRequestDto.getTitle())
                 .isAllDay(calendarRequestDto.getIsAllDay())
-                .startAt(calendarRequestDto.getStartAt())
-                .endAt(calendarRequestDto.getEndAt())
+                .startAt(startDate)
+                .endAt(endDate)
                 .imgId(calendarRequestDto.getImgId())
                 .location(calendarRequestDto.getLocation())
                 .status(calendarRequestDto.getStatus())
@@ -69,6 +82,7 @@ public class CoupleCalendarService {
         Account fidedUser = accountRepository.findByIdFetchCouple(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));     //user
         Couple couple = fidedUser.getCouple();                        //couple_id(PK)
         log.info(couple.toString());
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
         List<CoupleCalendar> calendars = coupleCalendarRepository.findByCoupleId(couple.getId());// 조회한 일정들을 list에 담는다.
 
@@ -92,8 +106,8 @@ public class CoupleCalendarService {
                     .id(calendar.getId())
                     .title(calendar.getTitle())
                     .isAllDay(calendar.getIsAllDay())
-                    .startAt(calendar.getStartAt())
-                    .endAt(calendar.getEndAt())
+                    .startAt(format.format(calendar.getStartAt()))
+                    .endAt(format.format(calendar.getEndAt()))
                     .imgId(calendar.getImgId())
                     .location(calendar.getLocation())
                     .status(calendar.getStatus())
@@ -110,8 +124,11 @@ public class CoupleCalendarService {
     @Transactional
     public String updateCalendar(Long id, CalendarRequestDto.Update calendarUpdateRequestDto) {
         CoupleCalendar coupleCalendar = coupleCalendarRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND ,ErrorCode.USER_NOT_FOUND.getMessage()));
-        coupleCalendar.updateCalendar(calendarUpdateRequestDto);
-
+        try {
+            coupleCalendar.updateCalendar(calendarUpdateRequestDto);
+        } catch (ParseException pe) {
+            log.error(pe.toString());
+        }
         List<CheckListRequestDto.Update> checkList = calendarUpdateRequestDto.getCheckList();//체크리스트
         for (CheckListRequestDto.Update checkListUpdateRequestDto : checkList) {
             Long checkid = checkListUpdateRequestDto.getId();
