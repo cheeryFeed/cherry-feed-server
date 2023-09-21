@@ -11,6 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -41,6 +43,20 @@ public class CoupleService {
 
     @Transactional
     public void deleteCouple(Long id) {
+        Optional<Account> userOptional = accountRepository.findByIdFetchCouple(id);
+
+        if (userOptional.isPresent()) {
+            Account user = userOptional.get();
+            if (user.getCouple() != null) {
+                user.getCouple().updateCoupleStts(9);
+            }
+        } else {
+            throw new AppException(ErrorCode.USER_NOT_FOUND, ErrorCode.USER_NOT_FOUND.getMessage());
+        }
+    }
+    /*20230902 위소스로 변경
+    @Transactional
+    public void deleteCouple(Long id) {
         accountRepository.findByIdFetchCouple(id).ifPresentOrElse(
                 user -> {
                     if (user.getCouple() != null) {
@@ -52,4 +68,5 @@ public class CoupleService {
                 }
         );
     }
+     */
 }

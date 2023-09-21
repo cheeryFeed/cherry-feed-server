@@ -25,6 +25,7 @@ public class AccountController {
     @ApiOperation(value = "회원가입", notes = "회원가입을 진행한다. 회원가입이 성공하면 200응답과 함께 회원가입이 성공하였습니다.가 반환됨.")
     @PostMapping("/join") // URI=  api/v1/users/join - post요청시 회원가입 진행
     public ResponseEntity<String> join(@RequestBody AccountDto.Create userJoinRequestDto) {
+        log.error("회원가입요청들어옴ㅋ");
         return ResponseEntity.ok().body(userService.join(userJoinRequestDto));
     }
 
