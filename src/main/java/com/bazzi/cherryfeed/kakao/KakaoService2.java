@@ -42,7 +42,7 @@ public class KakaoService2 {
         map.add("grant_type", "authorization_code");
         map.add("client_id", clientId);
 //        map.add("client_secret", clientSecret);
-        map.add("redirect_uri", "http://218.53.23.14:8090/kakao");
+        map.add("redirect_uri", "http://cherryfeed.shop/kakao");
         map.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(map, headers);

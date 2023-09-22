@@ -35,6 +35,9 @@ bootWar {
 
 dependencies {
 
+	//Java ImageIO 용량줄이는 라이브러리
+	implementation 'javax.xml.bind:jaxb-api:2.3.1'
+
 
 	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 

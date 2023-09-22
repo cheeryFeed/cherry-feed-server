@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -42,13 +44,16 @@ public class CoupleCalendar extends BaseEntity {
     @OneToMany(mappedBy = "calendar", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CheckList> checkLists = new ArrayList<>(); //캘린더 하나에 들어있는 체크리스트들
 
-    public void updateCalendar(CalendarRequestDto.Update calendarUpdateRequestDto) {
+    public void updateCalendar(CalendarRequestDto.Update calendarUpdateRequestDto) throws ParseException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         this.partiId1 = calendarUpdateRequestDto.getPartiId1();//참여자아이디1
         this.partiId2 = calendarUpdateRequestDto.getPartiId2();//참여자아이디2
         this.title = calendarUpdateRequestDto.getTitle();      //캘린더 이름
         this.isAllDay = calendarUpdateRequestDto.getIsAllDay();//종일여부
-        this.startAt = calendarUpdateRequestDto.getStartAt();  //시작시간
-        this.endAt = calendarUpdateRequestDto.getEndAt();      //종료시간
+//        this.startAt = calendarUpdateRequestDto.getStartAt();  //시작시간
+//        this.endAt = calendarUpdateRequestDto.getEndAt();      //종료시간
+        this.startAt = format.parse(calendarUpdateRequestDto.getStartAt());  //시작시간
+        this.endAt = format.parse(calendarUpdateRequestDto.getEndAt());      //종료시간
         this.imgId = calendarUpdateRequestDto.getImgId();      //캘린더 이미지 아이디
         this.location = calendarUpdateRequestDto.getLocation();//캘린더 위치
         this.status = calendarUpdateRequestDto.getStatus();    //일정 상태
